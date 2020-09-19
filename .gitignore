@@ -1,0 +1,6 @@
+# phpstorm project files
+/.idea
+/config/db.php
+/assets
+/uploads
+/vendor
