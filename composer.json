@@ -27,7 +27,9 @@
         "bburim/daterangepicker": "dev-master",
         "kartik-v/yii2-export": "dev-master",
         "sizeg/yii2-jwt": "^2.0",
-        "2amigos/qrcode-library": "~1.1"
+        "2amigos/qrcode-library": "~1.1",
+        "tigrov/intldata": "^1.1",
+        "tigrov/yii2-country": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

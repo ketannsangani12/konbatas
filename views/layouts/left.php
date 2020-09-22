@@ -39,57 +39,12 @@
                         'url' => '#',
                         'visible'=>true,
                         'items' => [
-                            ['label' => 'Agreement Templates', 'icon' => ' fa-adjust', 'url' => ['/agreementtemplates']],
-                            ['label' => 'Packages', 'icon' => ' fa-adjust', 'url' => ['/packages']],
-                            ['label' => 'Platform Fees', 'icon' => ' fa-adjust', 'url' => ['/platformfees']],
-                            ['label' => 'i-Stories', 'icon' => ' fa-adjust', 'url' => ['/istories']],
+                            ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/coutries']],
+                            ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
 
-                            ['label' => 'i-Lifestyles', 'icon' => ' fa-adjust', 'url' => ['/ilifestyle']],
-//                            ['label' => 'Platform Fees', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/platformfees']],
-//                            ['label' => 'Withdrawal Fees', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/withdrawalfees']],
-//
-//                            ['label' => 'Customer Referral Points', 'icon' => ' fa-adjust', 'url' => ['/customerreffererpoints/']],
-//                            ['label' => 'Merchant Referral Points', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/merchantreffererpoints']],
-//                            ['label' => 'Cashback Percentage', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/cashback']],
-//                            ['label' => 'Referral Transfer Percentage', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/refferaltransfer']],
-//                            //['label' => 'Cashback Percentage', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/cashback']],
-//                            ['label' => 'In-App Push Notifications ',
-//                              'icon' => 'circle-o',
-//                                'url' => '#',
-//                              'items' => [
-//                                    ['label' => 'Global Announcements', 'icon' => 'circle-o', 'url' => '/announcements/create',],
-//                                  ['label' => 'Announcement History', 'icon' => 'circle-o', 'url' => '/announcements',],
-//
-//                                ],
-//                            ],
-//                            ['label' => 'TLS Banners', 'icon' => ' fa-adjust', 'url' => ['/banners'],],
-//                            ['label' => 'TLS CMS', 'icon' => ' fa-adjust', 'url' => ['/cms'],],
-//                            ['label' => 'Product Categories', 'icon' => ' fa-adjust', 'url' => ['/categories'],],
-//                            ['label' => 'Category Row Control', 'icon' => ' fa-adjust', 'url' => ['/topupwallet/categorycontrol'],],
-//                            ['label' => 'Locations', 'icon' => ' fa-adjust', 'url' => ['/locations'],],
-//                            ['label' => 'Management',
-//                                'icon' => 'circle-o',
-//                                'url' => '#',
-//                                'items' => [
-//                                    ['label' => 'Account List', 'icon' => ' fa-user', 'url' => '/admins',],
-//                                    ['label' => 'User Roles', 'icon' => ' fa-user', 'url' => '/rbac/role',],
-//                                    ['label' => 'Email Templates', 'icon' => 'circle-o', 'url' => '/emailtemplates',],
-//
-//                                ],
-//                            ]
                             ]
                         ],
-//                    [
-//                        'label' => 'Merchant Management',
-//                        'icon' => ' fa-users',
-//                        'url' => '#',
-//                        'items' => [
-//                            ['label' => 'Listings', 'icon' => ' fa-adjust', 'url' => ['/merchants'],],
-//                            ['label' => 'Approval History', 'icon' => ' fa-adjust', 'url' => ['/approvalhistory'],],
-//                            ['label' => 'Merchant Groups', 'icon' => ' fa-adjust', 'url' => ['/merchantgroups'],],
-//
-//                        ]
-//                    ],
+
                     ['label' => 'Users', 'icon' => ' fa-user', 'url' => ['/users'],'active'=>($item == 'users')
                     ],
 

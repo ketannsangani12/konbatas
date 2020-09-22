@@ -11,19 +11,18 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset'
     ],
+    'controllerMap' => [
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrationController',
+        ],
+    ],
 
     'components' => [
         'formatter' => [
             'thousandSeparator' => ',',
             'currencyCode' => 'MYR',
         ],
-        'assetManager' => [
-            'bundles' => [
-                fv\yii\geocomplete\Asset::class => [
-                    'mapsApiKey' => 'AIzaSyDLNgqZ8balGvcruWJIavSvKijHI7k6jQA',
-                ]
-            ]
-        ],
+
         'jwt' => [
             'class' => \sizeg\jwt\Jwt::class,
             'key'   => 'secret',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83503d2775991014c867a3142249821c",
+    "content-hash": "1304ff440008b11b9c1dd9165ef708f5",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -3049,6 +3049,123 @@
                 "shim"
             ],
             "time": "2020-07-14T12:35:20+00:00"
+        },
+        {
+            "name": "tigrov/intldata",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigrov/intldata.git",
+                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigrov/intldata/zipball/1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
+                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.34"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tigrov\\intldata\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergei Tigrov",
+                    "email": "rrr-r@ya.ru"
+                }
+            ],
+            "description": "Intl extension data in comfortable format.",
+            "keywords": [
+                "continent",
+                "country",
+                "currency",
+                "i18n",
+                "internationalization",
+                "intl",
+                "l10n",
+                "language",
+                "locale",
+                "localization",
+                "measurement",
+                "region",
+                "time zone",
+                "timezone"
+            ],
+            "time": "2019-09-05T16:02:59+00:00"
+        },
+        {
+            "name": "tigrov/yii2-country",
+            "version": "1.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigrov/yii2-country.git",
+                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigrov/yii2-country/zipball/33346e58e42b66d60bf85ad45329e517367f2bbe",
+                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0",
+                "tigrov/intldata": "~1.0",
+                "yiisoft/yii2": "~2.0.13"
+            },
+            "suggest": {
+                "rinvex/countries": "Allows access to additional data of countries. For PHP >=7.0 only."
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "tigrov\\country\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "tigrov\\country\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergei Tigrov",
+                    "email": "rrr-r@ya.ru"
+                }
+            ],
+            "description": "Country data for Yii2 using Intl extension and more.",
+            "keywords": [
+                "continent",
+                "country",
+                "currency",
+                "i18n",
+                "internationalization",
+                "intl",
+                "l10n",
+                "language",
+                "locale",
+                "localization",
+                "measurement",
+                "region",
+                "time zone",
+                "timezone",
+                "yii2"
+            ],
+            "time": "2019-07-19T15:19:05+00:00"
         },
         {
             "name": "yiisoft/yii2",
