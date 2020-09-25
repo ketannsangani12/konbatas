@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UsersController extends Controller
+class SellersController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -82,17 +82,12 @@ class UsersController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
             // $model->picture = \yii\web\UploadedFile::getInstance($model, 'picture');
             if($model->validate()) {
+                $model->role = 'Seller';
                 $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 $password = substr(str_shuffle($chars),0,6);
                 $model->password = md5($password);
                 $model->created_at = date('Y-m-d h:i:s');
                 if($model->save()){
-                    Yii::$app->mailer->compose('adduser',
-                        ['password'=>$password]) // a view rendering result becomes the message body here
-                    ->setFrom('tlssocietyapps@gmail.com')
-                        ->setTo($model->email)
-                        ->setSubject('Account Created')
-                        ->send();
                     return $this->redirect(['index']);
 
                 }
@@ -121,6 +116,8 @@ class UsersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = 'updateseller';
+
 
         if ($model->load(Yii::$app->request->post()) ) {
             // $model->picture = \yii\web\UploadedFile::getInstance($model, 'picture');
@@ -152,8 +149,8 @@ class UsersController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->status = 3;
-        $model->save();
+        $model->status = 4;
+        $model->save(false);
         // $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

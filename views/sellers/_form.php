@@ -14,11 +14,14 @@ use yii\widgets\ActiveForm;
     <div class="box-body table-responsive ">
         <div class="row">
          <div class="col-md-8">
-        <?= $form->field($model, 'role')->dropDownList(['Seller'=>'Seller','Buyer'=>'Buyer'], ['id'=>'role']); ?>
 
         <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'business_type')->dropDownList([ 'Broker' => 'Broker', 'Scrap Collector' => 'Scrap Collector', 'Muffler Shop' => 'Muffler Shop', 'Wrecking Yard' => 'Wrecking Yard']) ?>
+
+        <?= $form->field($model, 'average_converters')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'contact_no')->textInput(['maxlength' => true]) ?>
 
          </div>
 </div>

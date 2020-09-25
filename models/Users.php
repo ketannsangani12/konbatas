@@ -41,7 +41,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['email','password'], 'required','on' => 'login'],
-            [['role', 'full_name','email'], 'required','on' => 'adduser'],
+            [['full_name','email','business_type','average_converters','contact_no'], 'required','on' => 'updateseller'],
             [['full_name','email','password','contact_no'], 'required','on' => 'register'],
             [['gender','dob','race','nationality','education_level','occupation','annual_income','contact_no','emergency_contact'], 'required','on' => 'updateprofileuser'],
             ['referral_code', 'checkReferralcode'],
@@ -58,8 +58,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
             //[['name', 'username', 'password', 'created_at', 'updated_at'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['password'], 'string', 'max' => 255],
-            [['username'], 'string', 'max' => 40],
+            [['password','average_converters'], 'string', 'max' => 255],
+            [['username','business_type'], 'string', 'max' => 40],
         ];
     }
 
@@ -75,15 +75,13 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'username' => 'Username',
             'password' => 'Password',
             'email'=>'Email',
-            'company_name'=>'Company Name',
-            'company_address'=>'Company Address',
-            'company_state'=>'Company State',
             'address'=>'Address',
             'state'=>'State',
             'registration_no'=>'Registration No',
             'bank_account_name'=>'Bank Account Name',
             'bank_account_no'=>'Bank Account No.',
             'bank_name'=>'Bank Name',
+            'contact_no'=>'Contact No.',
             'gender'=>'Gender',
             'dob'=>'DOB',
             'business_type'=>'Type of Business',

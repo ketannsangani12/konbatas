@@ -7,13 +7,13 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\UsersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Sellers';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="users-index box box-primary">
     <?php Pjax::begin(); ?>
     <div class="box-header with-border">
-        <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-primary btn-flat']) ?>
+        <h3>Sellers</h3>
     </div>
     <div class="box-body table-responsive">
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -35,8 +35,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
                 'full_name',
-                'company_name',
-                'registration_no',
+                'business_type',
+                'contact_no',
+                [
+                    'attribute'=>'status',
+                    'format'=>'raw',
+                    'value'=> function($model){
+                        if($model->status==1){
+                            return 'Active';
+                        }elseif($model->status==2){
+                            return 'Inactive';
+                        }elseif ($model->status==4){
+                            return 'Suspended';
+                        }
+                    },
+                    'filter'=>false,
+                    //'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],
+
+                ],
                 // 'wallet_balance',
                 // 'contact_no',
                 // 'email:email',
@@ -61,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'created_at',
                 // 'updated_at',
                 ['class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view} {update} {ratings}',
+                    'template'=>'{view} {update} {delete}',
                     'visibleButtons' => [
                         'ratings' => function ($model) {
                             return ($model->role=='Agent' || $model->role=='Cleaner' || $model->role=='Mover' || $model->role=='Laundry' || $model->role=='Handyman');
@@ -89,29 +105,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
 
                         },
-                        'ratings' => function ($url, $model) {
-                            if($model->role=='Agent'){
-                                $url = 'agentratings';
-                            }else if($model->role=='Cleaner' || $model->role=='Mover' || $model->role=='Laundry' || $model->role=='Handyman'){
-                                $url = 'vendorratings';
-                            }
 
-                            return Html::a('<i class="fa fa-star" aria-hidden="true"></i>', [\yii\helpers\Url::to([$url.'/index', 'id' => $model->id])], [
-
-                                'title' => 'Ratings',
-                                'class' =>'btn btn-sm bg-olive datatable-operation-btn'
-
-                            ]);
-
-                        },
 
                         'delete' => function ($url, $model) {
 
                             return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', [\yii\helpers\Url::to([Yii::$app->controller->id.'/delete', 'id' => $model->id])], [
 
-                                'title' => 'Delete',
+                                'title' => 'Suspend',
                                 'class' =>'btn btn-sm btn-danger datatable-operation-btn',
-                                'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                'data-confirm' => \Yii::t('yii', 'Are you sure you want to suspend this Seller?'),
                                 'data-method'  => 'post',
 
                             ]);
