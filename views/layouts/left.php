@@ -33,17 +33,17 @@
                     //['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
 
                     ['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/']],
-                    [
-                        'label' => 'Settings',
-                        'icon' => ' fa-life-buoy',
-                        'url' => '#',
-                        'visible'=>true,
-                        'items' => [
-                            ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
-                            ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
-
-                            ]
-                        ],
+//                      [
+//                        'label' => 'Settings',
+//                        'icon' => ' fa-life-buoy',
+//                        'url' => '#',
+//                        'visible'=>true,
+//                        'items' => [
+//                            ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
+//                            ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
+//
+//                            ]
+//                        ],
 
                     ['label' => 'Sellers', 'icon' => ' fa-user', 'url' => ['/sellers'],'active'=>($item == 'sellers')
                     ],
