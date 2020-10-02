@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'country',
 
                     'value' => function($model){
-                        return $model->countryname->name;
+                        return (isset($model->countryname->name))?$model->countryname->name:'';
                     },
                     'filter'=>\yii\helpers\ArrayHelper::map(\app\models\Countries::find()->asArray()->all(), 'ID', function($model) {
                         return $model['name'];
