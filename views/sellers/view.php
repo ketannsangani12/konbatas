@@ -30,6 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'full_name',
             //'last_name',
             //'wallet_balance',
+            'membership_level',
+            [
+                'label'=>'Country',
+
+                'value'=>function($model){
+                    return (isset($model->countryname->name))?$model->countryname->name:'';
+                }
+            ],
             'contact_no',
             'email:email',
             'business_type',

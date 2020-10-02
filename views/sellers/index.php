@@ -28,15 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                [
-                    'attribute'=>'role',
-
-                    'filter'=>array('Superadmin'=>'Superadmin','PE'=>'PE','FE'=>'FE','OE'=>'OE','Cleaner'=>'Cleaner','Mover'=>'Mover'),
-
-                ],
                 'full_name',
-                'business_type',
-                'contact_no',
+                [
+                    'attribute' => 'country',
+
+                    'value' => function($model){
+                        return $model->countryname->name;
+                    },
+                    'filter'=>\yii\helpers\ArrayHelper::map(\app\models\Countries::find()->asArray()->all(), 'ID', function($model) {
+                        return $model['name'];
+                    }),
+                    'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],
+                ],
+                'membership_level',
+                //'contact_no',
                 [
                     'attribute'=>'status',
                     'format'=>'raw',
@@ -53,29 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],
 
                 ],
-                // 'wallet_balance',
-                // 'contact_no',
-                // 'email:email',
-                // 'company_name',
-                // 'hp_no',
-                // 'company_address:ntext',
-                // 'company_state',
-                // 'registration_no',
-                // 'bank_account_name:ntext',
-                // 'bank_account_no',
-                // 'bank_name',
-                // 'image',
-                // 'password',
-                // 'secondary_password',
-                // 'token',
-                // 'verify_token',
-                // 'reset_token',
-                // 'firebase_token',
-                // 'device_token',
-                // 'referred_by',
-                // 'status',
-                // 'created_at',
-                // 'updated_at',
                 ['class' => 'yii\grid\ActionColumn',
                     'template'=>'{view} {update} {delete}',
                     'visibleButtons' => [

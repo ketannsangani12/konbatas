@@ -18,7 +18,25 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        <?php
+        $properties = \app\models\Countries::find()->asArray()->all();
+        //print_r($properties);exit;
+        if(!empty($properties)){
+            foreach ($properties as $property){
+                $data[$property['ID']] = $property['name'];
+            }
+        }
+        ?>
+        <?= $form->field($model, 'country')->widget(\kartik\select2\Select2::classname(), [
+            'data' => $data,
+            'options' => ['placeholder' => 'Select a Country ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         <?= $form->field($model, 'business_type')->dropDownList([ 'Broker' => 'Broker', 'Scrap Collector' => 'Scrap Collector', 'Muffler Shop' => 'Muffler Shop', 'Wrecking Yard' => 'Wrecking Yard']) ?>
+
+        <?= $form->field($model, 'membership_level')->dropDownList([ 'Green' => 'Green', 'Gold' => 'Gold', 'Silver' => 'Silver']) ?>
 
         <?= $form->field($model, 'average_converters')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'contact_no')->textInput(['maxlength' => true]) ?>

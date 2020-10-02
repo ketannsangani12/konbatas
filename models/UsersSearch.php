@@ -19,7 +19,7 @@ class UsersSearch extends Users
     {
         return [
             [['id', 'referred_by', 'status'], 'integer'],
-            [['username', 'role', 'full_name', 'contact_no', 'email', 'hp_no', 'bank_account_name', 'bank_account_no', 'bank_name', 'image', 'password', 'secondary_password', 'token', 'verify_token', 'reset_token', 'firebase_token', 'device_token', 'created_at', 'updated_at'], 'safe'],
+            [['username', 'role', 'full_name', 'contact_no', 'country','email', 'hp_no', 'bank_account_name', 'bank_account_no', 'bank_name', 'image', 'password', 'secondary_password', 'token', 'verify_token', 'reset_token', 'firebase_token', 'device_token', 'created_at', 'updated_at','membership_level'], 'safe'],
             [['wallet_balance'], 'number'],
         ];
     }
@@ -65,6 +65,8 @@ class UsersSearch extends Users
             'wallet_balance' => $this->wallet_balance,
             'referred_by' => $this->referred_by,
             'status' => $this->status,
+            'country'=> $this->country,
+            'membership_level'=> $this->membership_level,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);

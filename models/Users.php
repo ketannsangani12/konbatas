@@ -41,7 +41,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['email','password'], 'required','on' => 'login'],
-            [['full_name','email','business_type','average_converters','contact_no'], 'required','on' => 'updateseller'],
+            [['full_name','email','business_type','average_converters','contact_no','country','membership_level'], 'required','on' => 'updateseller'],
             [['full_name','email','password','contact_no'], 'required','on' => 'register'],
             [['gender','dob','race','nationality','education_level','occupation','annual_income','contact_no','emergency_contact'], 'required','on' => 'updateprofileuser'],
             ['referral_code', 'checkReferralcode'],
@@ -55,11 +55,11 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['oldpassword', 'newpassword'], 'required','on' => 'changepassword'],
             //[['oldpassword'], 'checkoldpassword','on' => 'changepassword'],
             [['secondary_password'], 'required', 'on' => 'createsecondarypassword'],
-
-            //[['name', 'username', 'password', 'created_at', 'updated_at'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['password','average_converters'], 'string', 'max' => 255],
             [['username','business_type'], 'string', 'max' => 40],
+            [['country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['country' => 'ID']],
+
         ];
     }
 
@@ -76,6 +76,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => 'Password',
             'email'=>'Email',
             'address'=>'Address',
+            'country'=>'Country',
+            'membership_level'=>'Membership Level',
             'state'=>'State',
             'registration_no'=>'Registration No',
             'bank_account_name'=>'Bank Account Name',
@@ -95,7 +97,10 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
-
+    public function getCountryname()
+    {
+        return $this->hasOne(Countries::className(), ['ID' => 'country']);
+    }
     public static function findIdentityByAccessToken($token, $type = null)
     {
         $token = \Yii::$app->jwt->getParser()->parse((string) $token); // Parses from a string
