@@ -33,22 +33,23 @@
                     //['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
 
                     ['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/']],
-//                      [
-//                        'label' => 'Settings',
-//                        'icon' => ' fa-life-buoy',
-//                        'url' => '#',
-//                        'visible'=>true,
-//                        'items' => [
-//                            ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
-//                            ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
-//
-//                            ]
-//                        ],
+                      [
+                        'label' => 'Settings',
+                        'icon' => ' fa-life-buoy',
+                        'url' => '#',
+                        'visible'=>true,
+                        'items' => [
+                            ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
+                            ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
+
+                            ]
+                        ],
 
                     ['label' => 'Sellers', 'icon' => ' fa-user', 'url' => ['/sellers'],'active'=>($item == 'sellers')
                     ],
 
-//                    ['label' => 'Packages', 'icon' => ' fa-cube', 'url' => ['/packages'],'visible'=>false],
+                     ['label' => 'Categories', 'icon' => ' fa-cube', 'url' => ['/categories']],
+                     ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices')]
 //                    ['label' => 'Properties', 'icon' => ' fa-home', 'url' => ['/properties'],'active'=>($item == 'properties' || ($item=='images' && $action=='create'))],
 //                    ['label' => 'Managed Properties', 'icon' => ' fa-cube', 'url' => ['/managedproperties'],'active'=>($item == 'managedproperties' || ($item=='images' && $action='add'))],
 //                    ['label' => 'Booking Requests', 'icon' => '  fa-database', 'url' => ['/bookingrequests'],'active'=>($item == 'bookingrequests')],
