@@ -45,8 +45,8 @@
                             ]
                         ],
 
-                    ['label' => 'Sellers', 'icon' => ' fa-user', 'url' => ['/sellers'],'active'=>($item == 'sellers')
-                    ],
+                    ['label' => 'Sellers', 'icon' => ' fa-users', 'url' => ['/sellers'],'active'=>($item == 'sellers')],
+                    ['label' => 'Buyers', 'icon' => ' fa-user', 'url' => ['/buyers'],'active'=>($item == 'buyers')],
 
                      ['label' => 'Categories', 'icon' => ' fa-cube', 'url' => ['/categories']],
                      ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices')]
