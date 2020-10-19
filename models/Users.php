@@ -44,8 +44,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['full_name','email','business_type','average_converters','contact_no','country','membership_level'], 'required','on' => 'updateseller'],
             [['full_name','email','password','contact_no'], 'required','on' => 'register'],
             [['gender','dob','race','nationality','education_level','occupation','annual_income','contact_no','emergency_contact'], 'required','on' => 'updateprofileuser'],
-            [['full_name','email','password','latitude','longitude','address','company_name','offering_pickup'], 'required','on' => 'addbuyer'],
-            [['full_name','latitude','longitude','address','company_name','offering_pickup'], 'required','on' => 'updatebuyer'],
+            [['full_name','email','password','country','state','latitude','longitude','address','company_name','offering_pickup'], 'required','on' => 'addbuyer'],
+            [['full_name','latitude','longitude','address','country','state','company_name','offering_pickup'], 'required','on' => 'updatebuyer'],
 
             ['referral_code', 'checkReferralcode'],
             [['email'], 'email'],

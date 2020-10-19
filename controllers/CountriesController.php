@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\States;
 use Yii;
 use app\models\Countries;
 use app\models\CountriesSearch;
@@ -138,6 +139,29 @@ class CountriesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionStates() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $id = end($_POST['depdrop_parents']);
+            $list = States::find()->andWhere(['country_id' => $id])->asArray()->all();
+            //echo "<pre>";print_r($list);exit;
+            $selected  = null;
+            if ($id != null && count($list) > 0) {
+                $selected = '';
+                foreach ($list as $i => $account) {
+                    $out[] = ['id' => $account['ID'], 'name' => $account['name']];
+                    if ($i == 0) {
+                        $selected = $account['ID'];
+                    }
+                }
+                // Shows how you can preselect a value
+                return ['output' => $out, 'selected' => $selected];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
     }
 
     /**

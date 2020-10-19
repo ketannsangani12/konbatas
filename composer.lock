@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1304ff440008b11b9c1dd9165ef708f5",
+    "content-hash": "d1eadf2d87ef51109e489fd4807be984",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -211,7 +211,7 @@
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:twbs/bootstrap.git",
+                "url": "https://github.com/twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -767,6 +767,53 @@
             "time": "2020-07-15T11:34:24+00:00"
         },
         {
+            "name": "kartik-v/dependent-dropdown",
+            "version": "v1.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/dependent-dropdown.git",
+                "reference": "54a8806002ee21b744508a2edb95ed01d35c6cf9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/dependent-dropdown/zipball/54a8806002ee21b744508a2edb95ed01d35c6cf9",
+                "reference": "54a8806002ee21b744508a2edb95ed01d35c6cf9",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\depdrop\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "A multi level dependent dropdown JQuery plugin that allows nested dependencies.",
+            "homepage": "https://github.com/kartik-v/dependent-dropdown",
+            "keywords": [
+                "dependent",
+                "dropdown",
+                "jquery",
+                "option",
+                "select"
+            ],
+            "time": "2019-03-09T10:53:11+00:00"
+        },
+        {
             "name": "kartik-v/yii2-bootstrap4-dropdown",
             "version": "v1.0.1",
             "source": {
@@ -1305,6 +1352,60 @@
                 "yii2"
             ],
             "time": "2020-03-20T14:21:31+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-widget-depdrop",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-depdrop.git",
+                "reference": "4dffe1fd0c9d9d5b7e6231f6cd059dfa36d22b3b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-depdrop/zipball/4dffe1fd0c9d9d5b7e6231f6cd059dfa36d22b3b",
+                "reference": "4dffe1fd0c9d9d5b7e6231f6cd059dfa36d22b3b",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/dependent-dropdown": "~1.4",
+                "kartik-v/yii2-krajee-base": ">=2.0.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\depdrop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Widget that enables setting up dependent dropdowns with nested dependencies (sub repo split from yii2-widgets)",
+            "homepage": "https://github.com/kartik-v/yii2-widget-depdrop",
+            "keywords": [
+                "dependent",
+                "dropdown",
+                "extension",
+                "form",
+                "jquery",
+                "plugin",
+                "widget",
+                "yii2"
+            ],
+            "time": "2019-05-25T07:32:15+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-fileinput",
@@ -3049,123 +3150,6 @@
                 "shim"
             ],
             "time": "2020-07-14T12:35:20+00:00"
-        },
-        {
-            "name": "tigrov/intldata",
-            "version": "1.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Tigrov/intldata.git",
-                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Tigrov/intldata/zipball/1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
-                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
-                "shasum": ""
-            },
-            "require": {
-                "ext-intl": "*",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.8.34"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "tigrov\\intldata\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergei Tigrov",
-                    "email": "rrr-r@ya.ru"
-                }
-            ],
-            "description": "Intl extension data in comfortable format.",
-            "keywords": [
-                "continent",
-                "country",
-                "currency",
-                "i18n",
-                "internationalization",
-                "intl",
-                "l10n",
-                "language",
-                "locale",
-                "localization",
-                "measurement",
-                "region",
-                "time zone",
-                "timezone"
-            ],
-            "time": "2019-09-05T16:02:59+00:00"
-        },
-        {
-            "name": "tigrov/yii2-country",
-            "version": "1.1.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Tigrov/yii2-country.git",
-                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Tigrov/yii2-country/zipball/33346e58e42b66d60bf85ad45329e517367f2bbe",
-                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0",
-                "tigrov/intldata": "~1.0",
-                "yiisoft/yii2": "~2.0.13"
-            },
-            "suggest": {
-                "rinvex/countries": "Allows access to additional data of countries. For PHP >=7.0 only."
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "bootstrap": "tigrov\\country\\Bootstrap"
-            },
-            "autoload": {
-                "psr-4": {
-                    "tigrov\\country\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergei Tigrov",
-                    "email": "rrr-r@ya.ru"
-                }
-            ],
-            "description": "Country data for Yii2 using Intl extension and more.",
-            "keywords": [
-                "continent",
-                "country",
-                "currency",
-                "i18n",
-                "internationalization",
-                "intl",
-                "l10n",
-                "language",
-                "locale",
-                "localization",
-                "measurement",
-                "region",
-                "time zone",
-                "timezone",
-                "yii2"
-            ],
-            "time": "2019-07-19T15:19:05+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -6716,6 +6700,123 @@
             "time": "2020-07-12T23:59:07+00:00"
         },
         {
+            "name": "tigrov/intldata",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigrov/intldata.git",
+                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigrov/intldata/zipball/1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
+                "reference": "1e71386ea4a569ff57cc5ba8905d0bb9237fd229",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.34"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tigrov\\intldata\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergei Tigrov",
+                    "email": "rrr-r@ya.ru"
+                }
+            ],
+            "description": "Intl extension data in comfortable format.",
+            "keywords": [
+                "continent",
+                "country",
+                "currency",
+                "i18n",
+                "internationalization",
+                "intl",
+                "l10n",
+                "language",
+                "locale",
+                "localization",
+                "measurement",
+                "region",
+                "time zone",
+                "timezone"
+            ],
+            "time": "2019-09-05T16:02:59+00:00"
+        },
+        {
+            "name": "tigrov/yii2-country",
+            "version": "1.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tigrov/yii2-country.git",
+                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tigrov/yii2-country/zipball/33346e58e42b66d60bf85ad45329e517367f2bbe",
+                "reference": "33346e58e42b66d60bf85ad45329e517367f2bbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0",
+                "tigrov/intldata": "~1.0",
+                "yiisoft/yii2": "~2.0.13"
+            },
+            "suggest": {
+                "rinvex/countries": "Allows access to additional data of countries. For PHP >=7.0 only."
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "tigrov\\country\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "tigrov\\country\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergei Tigrov",
+                    "email": "rrr-r@ya.ru"
+                }
+            ],
+            "description": "Country data for Yii2 using Intl extension and more.",
+            "keywords": [
+                "continent",
+                "country",
+                "currency",
+                "i18n",
+                "internationalization",
+                "intl",
+                "l10n",
+                "language",
+                "locale",
+                "localization",
+                "measurement",
+                "region",
+                "time zone",
+                "timezone",
+                "yii2"
+            ],
+            "time": "2019-07-19T15:19:05+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.9.1",
             "source": {
@@ -6928,7 +7029,8 @@
         "kartik-v/yii2-widget-fileinput": 20,
         "kartik-v/yii2-widget-select2": 20,
         "bburim/daterangepicker": 20,
-        "kartik-v/yii2-export": 20
+        "kartik-v/yii2-export": 20,
+        "kartik-v/yii2-widget-depdrop": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
