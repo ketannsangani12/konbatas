@@ -87,6 +87,7 @@ $config = [
             'class' => 'app\components\Common',
 
         ],
+
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
@@ -100,6 +101,7 @@ $config = [
             'useFileTransport'=>false
 
         ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
