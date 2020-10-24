@@ -2,31 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\AgentRatings;
 use app\models\BankAccounts;
-use app\models\BookingRequests;
-use app\models\Chats;
-use app\models\EmailTemplates;
-use app\models\FavouriteProperties;
-use app\models\GoldTransactions;
-use app\models\Ilifestyle;
-use app\models\Images;
-use app\models\Istories;
-use app\models\PromoCodes;
-use app\models\Properties;
-use app\models\PropertyRatings;
-use app\models\PropertyViews;
-use app\models\ServicerequestImages;
-use app\models\ServiceRequests;
-use app\models\TodoDocuments;
-use app\models\TodoItems;
-use app\models\TodoList;
-use app\models\Topups;
-use app\models\Transactions;
-use app\models\TransactionsItems;
-use app\models\UsersDocuments;
-use app\models\VendorRatings;
-use app\models\Withdrawals;
 use Da\QrCode\QrCode;
 use sizeg\jwt\JwtHttpBearerAuth;
 use yii\db\ActiveQuery;
@@ -105,53 +81,53 @@ class ApiusersController extends ActiveController
 
         ];
     }
-//    public function beforeAction($action)
-//    {
-//        header('Access-Control-Allow-Origin: *');
-//
-//        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-//
-//        header("Access-Control-Allow-Headers: X-Requested-With,token,user");
-//        parent::beforeAction($action);
-//
-//        if ($action->actionMethod != 'actionLogin' && $action->actionMethod != 'actionRegister' && $action->actionMethod!='actionForgotpassword' && $action->actionMethod!='actionAddrefferal' && $action->actionMethod!='actionVerifyotp' && $action->actionMethod!='actionResendotp') {
-//            $headers = Yii::$app->request->headers;
-//            if(!empty($headers) && isset($headers['token']) && $headers['token']!=''){
-//                try{
-//                    $token = Yii::$app->jwt->getParser()->parse((string) $headers['token']);
-//                    $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
-//                    $data->setIssuer(\Yii::$app->params[ 'hostInfo' ]);
-//                    $data->setAudience(\Yii::$app->params[ 'hostInfo' ]);
-//                    $data->setId('4f1g23a12aa');
-//                    // $data->setCurrentTime(time() + 61);
-//                    if($token->validate($data)){
-//                        $userdata = $token->getClaim('uid');
-//                        $this->user_id = $userdata->id;
-//                        return true;
-//
-//
-//                    }else{
-//                        echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
-//
-//                    }
-//                }catch (Exception $e) {
-//                    echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
-//
-//                }
-//
-//                //var_dump($token->validate($data));exit;
-//
-//                //return true;
-//            }else{
-//
-//                echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
-//            }
-//            //exit;
-//        }
-//        return true;
-//
-//
-//    }
+    public function beforeAction($action)
+    {
+        header('Access-Control-Allow-Origin: *');
+
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+
+        header("Access-Control-Allow-Headers: X-Requested-With,token,user");
+        parent::beforeAction($action);
+
+        if ($action->actionMethod != 'actionLogin' && $action->actionMethod != 'actionRegister' && $action->actionMethod!='actionForgotpassword' && $action->actionMethod!='actionAddrefferal' && $action->actionMethod!='actionVerifyotp' && $action->actionMethod!='actionResendotp') {
+            $headers = Yii::$app->request->headers;
+            if(!empty($headers) && isset($headers['token']) && $headers['token']!=''){
+                try{
+                    $token = Yii::$app->jwt->getParser()->parse((string) $headers['token']);
+                    $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
+                    $data->setIssuer(\Yii::$app->params[ 'hostInfo' ]);
+                    $data->setAudience(\Yii::$app->params[ 'hostInfo' ]);
+                    $data->setId('4f1g23a12aa');
+                    // $data->setCurrentTime(time() + 61);
+                    if($token->validate($data)){
+                        $userdata = $token->getClaim('uid');
+                        $this->user_id = $userdata->id;
+                        return true;
+
+
+                    }else{
+                        echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
+
+                    }
+                }catch (Exception $e) {
+                    echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
+
+                }
+
+                //var_dump($token->validate($data));exit;
+
+                //return true;
+            }else{
+
+                echo json_encode(array('status' => 0, 'message' => 'Authentication Failed.'));exit;
+            }
+            //exit;
+        }
+        return true;
+
+
+    }
 
 
 
@@ -201,9 +177,10 @@ class ApiusersController extends ActiveController
                 $model->scenario = 'loginapp';
                 $model->attributes = Yii::$app->request->post();
                 if ($model->validate()) {
-                    $data = Users::find()->where(['email' => $model->email] && ['password' => $model->password])->one();
+                    $data = Users::find()->where(['email' => $model->email ,'password' => md5($model->password),'role'=>'Seller'])->asArray()->one();
                     if(!empty($data)){
-                        return array('status' => 1, 'message' => 'You have Loging  Successfully');
+                        $token = (string)Users::generateToken($data);
+                        return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
                     }
@@ -266,8 +243,9 @@ class ApiusersController extends ActiveController
                 $model->scenario = 'changepassword';
                 $model->attributes = Yii::$app->request->post();
                 if ($model->validate()) {
-                    $data = Users::find()->where(['password' =>  md5($model->oldpassword)])->one();
-                    if ($data){
+                    $userid = $this->user_id;
+                    $data = Users::find()->where(['password' =>  md5($model->oldpassword),'id'=>$userid])->one();
+                    if (!empty($data)){
                         $data->password =  md5(Yii::$app->request->post('newpassword'));
                         $save = $data->save();
                         if ($save) {
@@ -287,13 +265,13 @@ class ApiusersController extends ActiveController
         }
     }
 
-    public function actionProfile(){
+    public function actionMyprofile(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
-            $user_id = 27;
-            $data = Users::find()->select(['id', 'email', 'full_name', 'contact_no'])->where(['id' => $user_id])->asArray()->one();
+            $user_id = $this->user_id;
+            $data = Users::find()->where(['id' => $user_id])->asArray()->one();
             if (!empty($data)) {
                 return array('status' => 1, 'data' => $data);
             }else{
@@ -316,14 +294,14 @@ class ApiusersController extends ActiveController
                 $model->attributes = Yii::$app->request->post();
 
                 if($model->validate()){
-                    $model->user_id = 3;
+                    $model->user_id = $this->user_id;
                     $model->document_image = 'test.jpeg';
-                    $model->created_at = date('Y-m-d h:i:s');
-                    $model->updated_at = date('Y-m-d h:i:s');
+                    $model->created_at = date('Y-m-d H:i:s');
+                    $model->updated_at = date('Y-m-d H:i:s');
 
                     $save = $model->save();
                     if($save) {
-                        return array('status' => 1, 'message' => 'You have add bank Details Successfully.','user_id'=>$model->id);
+                        return array('status' => 1, 'message' => 'You have add bank Details Successfully.');
                     }else{
                         return array('status' => 0, 'message' => 'somthing Went wrong');
                     }
