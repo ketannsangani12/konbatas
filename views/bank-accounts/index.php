@@ -29,7 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'account_name',
                 'bank_name',
                  'swift_code',
-                 'document_image',
+                [
+                    'label' => 'document_image',
+                    'format' => ['image',['width'=>'120']],
+                    'value'=>function($model){return('userprofileimage/'.$model->document_image);},
+                ],
                  'address',
                  'suburb',
                  'city',

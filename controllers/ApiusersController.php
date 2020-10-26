@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\BankAccounts;
+use app\models\Faqs;
 use Da\QrCode\QrCode;
 use sizeg\jwt\JwtHttpBearerAuth;
 use yii\db\ActiveQuery;
@@ -281,6 +282,33 @@ class ApiusersController extends ActiveController
         }
     }
 
+    public function actionUpdateprofile(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST)) {
+                $model = Users::find()->where(['id' => $this->user_id])->one();
+                $model->scenario = 'updateprofile';
+                $model->attributes = Yii::$app->request->post();
+                if ($model->validate()) {
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $save = $model->save();
+                    if ($save){
+                        return array('status' => 1, 'message' => 'Data Updated Successfully');
+                    }else{
+                        return array('status' => 0, 'message' => 'Data Not Updated');
+                    }
+                }
+                else {
+                    return array('status' => 0, 'message' => $model->getErrors());
+                }
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
+
 //    BANK ACCOUNT API
 
     public function actionAddbankaccount(){
@@ -312,6 +340,22 @@ class ApiusersController extends ActiveController
             } else {
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
             }
+        }
+    }
+
+    public function actionFaqs(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $user_id = $this->user_id;
+            $data = Faqs::find()->where(['user_id' => $user_id])->asArray()->one();
+            if (!empty($data)) {
+                return array('status' => 1, 'data' => $data);
+            }else{
+                return array('status' => 0, 'message' => 'User Id Not Found');
+            }
+
         }
     }
 

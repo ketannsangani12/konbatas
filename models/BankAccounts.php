@@ -41,9 +41,10 @@ class BankAccounts extends \yii\db\ActiveRecord
         return [
             [['account_number','account_name','bank_name','swift_code','address','suburb','city','state'], 'required' ,'on' => 'addbankaccount'],
             [['account_number'], 'unique','on'=>'addbankaccount'],
-            [['user_id','account_number','account_name','bank_name','swift_code','document_image','address','suburb','city','state'], 'required'],
+            //[['user_id','account_number','account_name','bank_name','swift_code','document_image','address','suburb','city','state'], 'required'],
             [['user_id'], 'integer'],
-            [['document_image'],'file'],
+            ['user_id','default','value'=>1],
+            [['document_image'],'file','skipOnEmpty' => false, 'extensions' => 'jpg, png'],
             [['created_at', 'updated_at'], 'safe'],
             [['account_number'], 'string', 'max' => 51],
             [['account_name', 'bank_name', 'swift_code', 'document_image', 'address', 'suburb', 'city', 'state'], 'string', 'max' => 255],

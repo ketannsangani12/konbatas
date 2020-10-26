@@ -40,6 +40,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
+            [['full_name','business_type','average_converters','contact_no'], 'required','on' => 'updateprofile'],
             [['full_name','email','password','business_type','average_converters','contact_no'], 'required','on' => 'register'],
             [['email','password'], 'required','on' => 'loginapp'],
             [['email'], 'required','on' => 'forgotpassword'],
