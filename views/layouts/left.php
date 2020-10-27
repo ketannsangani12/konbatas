@@ -49,9 +49,10 @@
                     ['label' => 'Buyers', 'icon' => ' fa-user', 'url' => ['/buyers'],'active'=>($item == 'buyers')],
 
                      ['label' => 'Categories', 'icon' => ' fa-cube', 'url' => ['/categories']],
-                     ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices')]
+                     ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices')],
+                    ['label' => 'Products', 'icon' => ' fa-cube', 'url' => ['/products'],'active'=>($item == 'products')],
+
 //                    ['label' => 'Properties', 'icon' => ' fa-home', 'url' => ['/properties'],'active'=>($item == 'properties' || ($item=='images' && $action=='create'))],
-//                    ['label' => 'Managed Properties', 'icon' => ' fa-cube', 'url' => ['/managedproperties'],'active'=>($item == 'managedproperties' || ($item=='images' && $action='add'))],
 //                    ['label' => 'Booking Requests', 'icon' => '  fa-database', 'url' => ['/bookingrequests'],'active'=>($item == 'bookingrequests')],
 //                    ['label' => 'Renovation Quotes', 'icon' => ' fa-recycle', 'url' => ['/renovationquotes'],'active'=>($item == 'renovationquotes')],
 //                    ['label' => 'Insurances', 'icon' => ' fa-shield', 'url' => ['/insurances'],'active'=>($item == 'insurances')],
