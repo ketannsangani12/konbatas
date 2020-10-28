@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'updated_at',
 
                 ['class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view} {update} ',
+                    'template'=>'{view} {update} {gallery}',
 
                     'buttons'=>[
 
@@ -69,7 +69,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         },
 
+                        'gallery' => function ($url, $model) {
 
+                            return Html::a('<i class="fa fa-picture-o" aria-hidden="true"></i>', ['images/create','id'=>$model->id], [
+
+                                'title' => 'Images',
+                                'class'=>'btn btn-sm bg-blue datatable-operation-btn'
+
+                            ]);
+
+                        },
                         'delete' => function ($url, $model) {
 
                             return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', [\yii\helpers\Url::to([Yii::$app->controller->id.'/delete', 'id' => $model->id])], [

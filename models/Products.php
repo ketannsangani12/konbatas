@@ -94,4 +94,15 @@ class Products extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Categories::className(), ['id' => 'category_id']);
     }
+
+    public function getImages()
+    {
+        return $this->hasMany(Images::className(), ['product_id' => 'id']);
+    }
+
+
+    public function getPictures()
+    {
+        return $this->hasOne(Images::className(), ['product_id' => 'id'])->orderBy(['id'=>SORT_ASC]);
+    }
 }
