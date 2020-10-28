@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\models\BankAccounts;
+use app\models\Categories;
 use app\models\Faqs;
+use app\models\Products;
 use Da\QrCode\QrCode;
 use sizeg\jwt\JwtHttpBearerAuth;
 use yii\db\ActiveQuery;
@@ -309,7 +311,45 @@ class ApiusersController extends ActiveController
         }
     }
 
-//    BANK ACCOUNT API
+    public function actionFaqs(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $data = Faqs::find()->asArray()->all();
+            return array('status' => 1, 'data' => $data);
+        }
+    }
+
+    public function actionProducts(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['category_id']) && $_POST['category_id'] != '') {
+                    $data = Products::find()->where(['category_id' => $_POST['category_id']])->asArray()->all();
+                    return array('status' => 1, 'data' => $data);
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
+
+    public function actionProductdetails(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['product_id']) && $_POST['product_id'] != '') {
+                $data = Products::find()->with('images')->where(['id' => $_POST['product_id']])->asArray()->one();
+                return array('status' => 1, 'data' => $data);
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
+
+    //    BANK ACCOUNT API
 
     public function actionAddbankaccount(){
         $method = $_SERVER['REQUEST_METHOD'];
@@ -320,7 +360,6 @@ class ApiusersController extends ActiveController
                 $model = new BankAccounts();
                 $model->scenario = 'addbankaccount';
                 $model->attributes = Yii::$app->request->post();
-
                 if($model->validate()){
                     $model->user_id = $this->user_id;
                     $model->document_image = 'test.jpeg';
@@ -343,13 +382,13 @@ class ApiusersController extends ActiveController
         }
     }
 
-    public function actionFaqs(){
+    public function actionBankdetails(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             $user_id = $this->user_id;
-            $data = Faqs::find()->where(['user_id' => $user_id])->asArray()->one();
+            $data = BankAccounts::find()->where(['user_id' => $user_id])->asArray()->one();
             if (!empty($data)) {
                 return array('status' => 1, 'data' => $data);
             }else{

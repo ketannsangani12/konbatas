@@ -31,7 +31,6 @@ class Faqs extends \yii\db\ActiveRecord
         return [
             [['title','description'], 'required' ,'on' => 'faqs'],
             [['description'], 'string'],
-            ['user_id','default','value'=>28],
             [['created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
         ];
