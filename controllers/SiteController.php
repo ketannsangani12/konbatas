@@ -79,7 +79,19 @@ class SiteController extends Controller
         $model = new Users();
         $model->scenario = 'login';
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if(Yii::$app->user->identity->role=='Buyer'){
+             $userscheckdocument = Users::findOne(Yii::$app->user->id);
+             if($userscheckdocument->document==''){
+                 return $this->redirect(['uploaddocument']);
+
+             }else{
+                 return $this->goBack();
+
+             }
+            }else{
+                return $this->goBack();
+
+            }
         }
 
         $model->password = '';
@@ -116,7 +128,37 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionUploaddocument()
+    {
+        $model = Users::findOne(Yii::$app->user->id);
+        $model->scenario = 'uploaddocument';
+        // print_r($model);exit;
+        if ($model->load(Yii::$app->request->post())) {
+            $model->documentid = \yii\web\UploadedFile::getInstance($model, 'documentid');
 
+            if($model->validate()) {
+                if($model->save()){
+                    $time = time();
+                    $model->documentid->saveAs('uploads/csv/' .$time. '.' . $model->documentid->extension);
+                    $model->document = 'uploads/users/' .$time. '.' . $model->documentid->extension;
+                    $model->save(false);
+                    Yii::$app->session->setFlash('success', "You have updated profile successfully.");
+
+                    return $this->redirect(['index']);
+                }
+                //  Yii::$app->session->setFlash('contactFormSubmitted');
+            }else{
+                return $this->render('uploaddocument', [
+                    'model' => $model,
+                ]);
+            }
+
+            // return $this->refresh();
+        }
+        return $this->render('uploaddocument', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Logout action.

@@ -37,7 +37,7 @@
                         'label' => 'Settings',
                         'icon' => ' fa-life-buoy',
                         'url' => '#',
-                        'visible'=>true,
+                        'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
                         'items' => [
                             ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
                             ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
@@ -45,12 +45,17 @@
                             ]
                         ],
 
-                    ['label' => 'Sellers', 'icon' => ' fa-users', 'url' => ['/sellers'],'active'=>($item == 'sellers')],
-                    ['label' => 'Buyers', 'icon' => ' fa-user', 'url' => ['/buyers'],'active'=>($item == 'buyers')],
+                    ['label' => 'Sellers', 'icon' => ' fa-users', 'url' => ['/sellers'],'active'=>($item == 'sellers'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
+                    ],
+                    ['label' => 'Buyers', 'icon' => ' fa-user', 'url' => ['/buyers'],'active'=>($item == 'buyers'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
+                    ],
 
-                     ['label' => 'Categories', 'icon' => ' fa-cube', 'url' => ['/categories']],
-                     ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices')],
-                    ['label' => 'Products', 'icon' => ' fa-cube', 'url' => ['/products'],'active'=>($item == 'products')],
+                     ['label' => 'Categories', 'icon' => ' fa-cube', 'url' => ['/categories'],'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
+                     ],
+                     ['label' => 'Metal Prices', 'icon' => ' fa-shield', 'url' => ['/metalsprices/create'],'active'=>($item == 'metalsprices'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
+                     ],
+                    ['label' => 'Products', 'icon' => ' fa-cube', 'url' => ['/products'],'active'=>($item == 'products'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
+                    ],
 
 //                    ['label' => 'Properties', 'icon' => ' fa-home', 'url' => ['/properties'],'active'=>($item == 'properties' || ($item=='images' && $action=='create'))],
 //                    ['label' => 'Booking Requests', 'icon' => '  fa-database', 'url' => ['/bookingrequests'],'active'=>($item == 'bookingrequests')],

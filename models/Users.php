@@ -26,6 +26,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public $rememberMe = true;
     protected $token;
     public $newpassword;
+    public $documentid;
     /**
      * {@inheritdoc}
      */
@@ -63,6 +64,10 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['bank_account_name','bank_account_no','bank_name'], 'required','on' => 'adduseraccount'],
             //[['username','name'], 'required','on' => 'create'],
             [['oldpassword', 'newpassword'], 'required','on' => 'changepassword'],
+            [['documentid', 'country','state','latitude','longitude'], 'required','on' => 'uploaddocument'],
+            [['documentid'], 'file',  'extensions' => 'jpeg,jpg,png'],
+
+
             //[['oldpassword'], 'checkoldpassword','on' => 'changepassword'],
             [['secondary_password'], 'required', 'on' => 'createsecondarypassword'],
             [['created_at', 'updated_at'], 'safe'],
@@ -103,6 +108,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'emergency_contact'=>'Emergency Contact',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'documentid' =>'Document ID',
+            'document' =>'Document ID',
             'referral_code'=>'Referral Code'
         ];
     }
@@ -144,7 +151,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
              */
             public static function findByUsername($username)
             {
-                return Users::findOne(['email'=>$username]);
+                return Users::find()->where(['email'=>$username])->andWhere(['in','role',['Superadmin','Buyer']])->one();
             }
 
             /**
@@ -196,6 +203,13 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                     }
                 }
             }
+    public function getRole()
+    {
+        $profile = Users::find()->where(['user_id'=>$this->id])->one();
+        if ($profile !==null)
+            return $profile->role;
+        return false;
+    }
 
             public function login()
             {
