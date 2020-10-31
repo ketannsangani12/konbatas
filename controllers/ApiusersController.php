@@ -419,17 +419,17 @@ class ApiusersController extends ActiveController
                     $model->updated_at = date('Y-m-d H:i:s');
                     $save = $model->save();
                     if($save) {
-                        foreach ($items as  $cartitem) {
+
                             $cartmodel = new CartItems();
                             $cartmodel->cart_id = $model->id;
-                            $cartmodel->product_id = 1;
+                           // $cartmodel->product_id = 1;
                             $cartmodel->price = 2;
                             $cartmodel->quantity = 22;
                             $cartmodel->currency = $model->currency;
                             $cartmodel->created_at = date('Y-m-d H:i:s');
                             $cartmodel->updated_at = date('Y-m-d H:i:s');
                             $cartmodel->save();
-                        }
+
                         return array('status' => 1, 'message' => 'You have add Cart Successfully.');
                     }else{
                         return array('status' => 0, 'message' => 'somthing Went wrong');
