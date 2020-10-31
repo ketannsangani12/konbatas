@@ -50,6 +50,7 @@ class Carts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['currency','latitude','longitude','country_id','total','tax'], 'required' ,'on' => 'carts'],
             [['seller_id', 'buyer_id', 'country_id', 'state_id'], 'integer'],
             [['latitude', 'longitude', 'subtotal', 'delivery_fee', 'tax', 'total'], 'number'],
             [['address', 'type', 'status'], 'string'],

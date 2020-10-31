@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\BankAccounts;
+use app\models\CartItems;
+use app\models\Carts;
 use app\models\Categories;
 use app\models\Faqs;
 use app\models\Products;
@@ -395,6 +397,49 @@ class ApiusersController extends ActiveController
                 return array('status' => 0, 'message' => 'User Id Not Found');
             }
 
+        }
+    }
+
+    public function actionCarts(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST)) {
+                $model = new Carts();
+                $model->scenario = 'carts';
+                $items = json_decode($_POST['items']);
+                unset($_POST['items']);
+                $model->attributes = Yii::$app->request->post();
+                if($model->validate()){
+                    $model->order_no =  '123456';
+                    $model->seller_id = $this->user_id;
+                    $model->order_placed = date('Y-m-d H:i:s');
+                    $model->created_at = date('Y-m-d H:i:s');
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $save = $model->save();
+                    if($save) {
+                        foreach ($items as  $cartitem) {
+                            $cartmodel = new CartItems();
+                            $cartmodel->cart_id = $model->id;
+                            $cartmodel->product_id = 1;
+                            $cartmodel->price = 2;
+                            $cartmodel->quantity = 22;
+                            $cartmodel->currency = $model->currency;
+                            $cartmodel->created_at = date('Y-m-d H:i:s');
+                            $cartmodel->updated_at = date('Y-m-d H:i:s');
+                            $cartmodel->save();
+                        }
+                        return array('status' => 1, 'message' => 'You have add Cart Successfully.');
+                    }else{
+                        return array('status' => 0, 'message' => 'somthing Went wrong');
+                    }
+                }else{
+                    return array('status' => 0, 'message' => $model->getErrors());
+                }
+            } else {
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
         }
     }
 
