@@ -399,43 +399,92 @@ class ApiusersController extends ActiveController
 
         }
     }
-
-    public function actionCarts(){
+    public function actionMycarts(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
-            if (!empty($_POST)) {
-                $model = new Carts();
-                $model->scenario = 'carts';
-                $items = json_decode($_POST['items']);
-                unset($_POST['items']);
-                $model->attributes = Yii::$app->request->post();
-                if($model->validate()){
-                    $model->order_no =  '123456';
-                    $model->seller_id = $this->user_id;
-                    $model->order_placed = date('Y-m-d H:i:s');
-                    $model->created_at = date('Y-m-d H:i:s');
-                    $model->updated_at = date('Y-m-d H:i:s');
-                    $save = $model->save();
-                    if($save) {
+            $user_id = $this->user_id;
+            $carts = Carts::find()->select('*')->with([
+                'cartitems'=>function ($query) {
+                    $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
+                },
+                'cartitems.product'=>function ($query) {
+                    $query->select(['id','category_id','brand','part_number','secondary_part_number','description']);
+                },
+                'cartitems.product.images'=>function ($query) {
+                    $query->select(['id','product_id','image']);
+                },
+            ])->where(['seller_id'=>$user_id])->orderBy(['created_at'=>SORT_DESC])->asArray()->all();
+            return array('status' => 1, 'data' => $carts);
 
-                            $cartmodel = new CartItems();
-                            $cartmodel->cart_id = $model->id;
-                           // $cartmodel->product_id = 1;
-                            $cartmodel->price = 2;
-                            $cartmodel->quantity = 22;
-                            $cartmodel->currency = $model->currency;
-                            $cartmodel->created_at = date('Y-m-d H:i:s');
-                            $cartmodel->updated_at = date('Y-m-d H:i:s');
-                            $cartmodel->save();
 
-                        return array('status' => 1, 'message' => 'You have add Cart Successfully.');
-                    }else{
-                        return array('status' => 0, 'message' => 'somthing Went wrong');
+        }
+    }
+
+    public function actionCreatecart(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['items']) && !empty($_POST['items'])) {
+                $transaction = Yii::$app->db->beginTransaction();
+
+                try {
+                    $model = new Carts();
+                    $model->scenario = 'addcart';
+                    $model->attributes = Yii::$app->request->post();
+                    if ($model->validate()) {
+                        $model->seller_id = $this->user_id;
+                        $model->created_at = date('Y-m-d H:i:s');
+                        $items = json_decode($model->items);
+                        $model->items = null;
+                        $save = $model->save(false);
+
+                        if ($save) {
+                            $cart_id = $model->id;
+
+                          if(!empty($items)){
+                              $subtotal = 0;
+                              foreach ($items as $value){
+                                  $cartitem = new CartItems();
+                                  $cartitem->cart_id = $cart_id;
+                                  $cartitem->product_id = $value->product_id;
+                                  $cartitem->price = $value->price;
+                                  $cartitem->quantity = $value->quantity;
+                                  $cartitem->total_price = $value->price*$value->quantity;
+                                  $subtotal += $cartitem->total_price;
+                                  $cartitem->currency = $model->currency;
+                                  $cartitem->created_at = date('Y-m-d H:i:s');
+                                  $cartitem->save(false);
+                              }
+                              $model->subtotal=$subtotal;
+                              $model->total = $model->subtotal+$model->delivery_fee+$model->tax;
+                              $model->status = 'Processing';
+                              $model->order_no = Yii::$app->common->generatereferencenumber($cart_id);
+                              $model->save(false);
+                              $transaction->commit();
+
+                              return array('status' => 1, 'message' => 'You have added Cart Successfully.');
+
+                          }else{
+                              $transaction->rollBack();
+
+                              return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+
+                          }
+
+                        } else {
+                            return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+                        }
+                    } else {
+                        return array('status' => 0, 'message' => $model->getErrors());
                     }
-                }else{
-                    return array('status' => 0, 'message' => $model->getErrors());
+                }catch (Exception $e) {
+                    // # if error occurs then rollback all transactions
+                    $transaction->rollBack();
+                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+
                 }
             } else {
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');

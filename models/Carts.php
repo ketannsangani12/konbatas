@@ -36,6 +36,7 @@ use Yii;
  */
 class Carts extends \yii\db\ActiveRecord
 {
+    public $items;
     /**
      * {@inheritdoc}
      */
@@ -50,7 +51,7 @@ class Carts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['currency','latitude','longitude','country_id','total','tax'], 'required' ,'on' => 'carts'],
+            [['currency','latitude','longitude','country_id','address','tax','items','delivery_fee'], 'required' ,'on' => 'addcart'],
             [['seller_id', 'buyer_id', 'country_id', 'state_id'], 'integer'],
             [['latitude', 'longitude', 'subtotal', 'delivery_fee', 'tax', 'total'], 'number'],
             [['address', 'type', 'status'], 'string'],
@@ -86,6 +87,7 @@ class Carts extends \yii\db\ActiveRecord
             'total' => 'Total',
             'type' => 'Type',
             'status' => 'Status',
+            'items' =>'Items',
             'order_placed' => 'Order Placed',
             'payment_date' => 'Payment Date',
             'created_at' => 'Created At',
@@ -98,7 +100,7 @@ class Carts extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCartItems()
+    public function getCartitems()
     {
         return $this->hasMany(CartItems::className(), ['cart_id' => 'id']);
     }
