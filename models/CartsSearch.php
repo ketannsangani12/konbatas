@@ -19,7 +19,7 @@ class CartsSearch extends Carts
     {
         return [
             [['id', 'seller_id', 'buyer_id', 'country_id', 'state_id'], 'integer'],
-            [['order_no', 'currency', 'type', 'status', 'order_placed', 'payment_date', 'created_at', 'updated_at'], 'safe'],
+            [['order_no', 'currency', 'address', 'type', 'status', 'order_placed', 'payment_date', 'created_at', 'updated_at'], 'safe'],
             [['latitude', 'longitude', 'subtotal', 'delivery_fee', 'tax', 'total'], 'number'],
         ];
     }
@@ -80,6 +80,7 @@ class CartsSearch extends Carts
 
         $query->andFilterWhere(['like', 'order_no', $this->order_no])
             ->andFilterWhere(['like', 'currency', $this->currency])
+            ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'status', $this->status]);
 

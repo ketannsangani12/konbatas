@@ -53,7 +53,7 @@ class CartItems extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'cart_id' => 'Cart ID',
-            'product_id' => 'Product ID',
+            'product_id' => 'Product',
             'quantity' => 'Quantity',
             'price' => 'Price',
             'total_price' => 'Total Price',

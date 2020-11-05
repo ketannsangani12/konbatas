@@ -37,6 +37,7 @@ use Yii;
 class Carts extends \yii\db\ActiveRecord
 {
     public $items;
+    public $receipt;
     /**
      * {@inheritdoc}
      */
@@ -52,6 +53,9 @@ class Carts extends \yii\db\ActiveRecord
     {
         return [
             [['currency','latitude','longitude','country_id','address','tax','items','delivery_fee'], 'required' ,'on' => 'addcart'],
+            [['status'], 'required' ,'on' => 'acceptorreject'],
+            [['status','receipt'], 'required' ,'on' => 'deliverorder'],
+            [['receipt'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpeg,jpg,png,pdf'],
             [['seller_id', 'buyer_id', 'country_id', 'state_id'], 'integer'],
             [['latitude', 'longitude', 'subtotal', 'delivery_fee', 'tax', 'total'], 'number'],
             [['address', 'type', 'status'], 'string'],
@@ -73,13 +77,13 @@ class Carts extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'order_no' => 'Order No',
-            'seller_id' => 'Seller ID',
-            'buyer_id' => 'Buyer ID',
+            'seller_id' => 'Seller ',
+            'buyer_id' => 'Buyer',
             'currency' => 'Currency',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
-            'country_id' => 'Country ID',
-            'state_id' => 'State ID',
+            'country_id' => 'Country',
+            'state_id' => 'State',
             'address' => 'Address',
             'subtotal' => 'Subtotal',
             'delivery_fee' => 'Delivery Fee',
@@ -88,6 +92,8 @@ class Carts extends \yii\db\ActiveRecord
             'type' => 'Type',
             'status' => 'Status',
             'items' =>'Items',
+            'Document'=>'Payment Receipt',
+            'receipt' => 'Receipt',
             'order_placed' => 'Order Placed',
             'payment_date' => 'Payment Date',
             'created_at' => 'Created At',

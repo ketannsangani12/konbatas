@@ -44,7 +44,8 @@
 
                             ]
                         ],
-
+                    ['label' => 'Carts', 'icon' => ' fa-shopping-cart', 'url' => ['/carts'],'active'=>($item == 'carts'),'visible'=>true,
+                    ],
                     ['label' => 'Sellers', 'icon' => ' fa-users', 'url' => ['/sellers'],'active'=>($item == 'sellers'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
                     ],
                     ['label' => 'Buyers', 'icon' => ' fa-user', 'url' => ['/buyers'],'active'=>($item == 'buyers'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),

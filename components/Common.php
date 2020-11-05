@@ -109,15 +109,15 @@ class Common extends Component
             case "New";
                 return "<span class='btn btn-warning btn-xs'>New</span>";
                 break;
-            case "Pending";
-                return "<span class='btn btn-warning btn-xs'>Pending</span>";
+            case "Processing";
+                return "<span class='btn btn-warning btn-xs'>Processing</span>";
 
                 break;
             case "Approved";
                 return "<span class='btn bg-green btn-xs'>Approved</span>";
                 break;
-            case "Accepted";
-                return "<span class='btn bg-green btn-xs'>Accepted</span>";
+            case "Delivered";
+                return "<span class='btn bg-green btn-xs'>Delivered</span>";
                 break;
             case "Completed";
                 return "<span class='btn bg-green btn-xs'>Completed</span>";
