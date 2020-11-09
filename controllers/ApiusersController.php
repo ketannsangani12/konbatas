@@ -6,6 +6,7 @@ use app\models\BankAccounts;
 use app\models\CartItems;
 use app\models\Carts;
 use app\models\Categories;
+use app\models\Countries;
 use app\models\Faqs;
 use app\models\Products;
 use Da\QrCode\QrCode;
@@ -33,6 +34,7 @@ class ApiusersController extends ActiveController
     private $language = 1;
     public $baseurl = null;
     private $user_id;
+    private $currency;
     public static function allowedDomains()
     {
         return [
@@ -108,6 +110,9 @@ class ApiusersController extends ActiveController
                     if($token->validate($data)){
                         $userdata = $token->getClaim('uid');
                         $this->user_id = $userdata->id;
+                        $countrydetail = Countries::findOne($userdata->country);
+                        $this->currency = $countrydetail->currency_code;
+                       // echo "<pre>";print_r($countrydetail);exit;
                         return true;
 
 
@@ -185,6 +190,8 @@ class ApiusersController extends ActiveController
                     $data = Users::find()->where(['email' => $model->email ,'password' => md5($model->password),'role'=>'Seller'])->asArray()->one();
                     if(!empty($data)){
                         $token = (string)Users::generateToken($data);
+                        $countrydetail = Countries::findOne($data['country']);
+                        $data['currency'] = $countrydetail->currency;
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
@@ -491,5 +498,23 @@ class ApiusersController extends ActiveController
             }
         }
     }
+   public function actionGetconversionrate(){
+       $currency = $this->currency;
+       if($currency!=''){
+           $currencyrate = Yii::$app->common->getconversionrate($currency);
+           if($currencyrate!=''){
+               return array('status' => 1, 'data' => $currencyrate);
+
+           }else{
+               return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+
+           }
+
+       }else{
+           return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+
+       }
+
+   }
 
 }

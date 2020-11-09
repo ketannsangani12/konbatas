@@ -358,4 +358,9 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         // no real check at the moment to be sure that the error is triggered
 
     }
+
+    public function getCountry()
+    {
+        return $this->hasOne(Countries::className(), ['ID' => 'country_id']);
+    }
     }
