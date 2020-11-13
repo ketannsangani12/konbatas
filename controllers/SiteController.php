@@ -139,7 +139,7 @@ class SiteController extends Controller
             if($model->validate()) {
                 if($model->save()){
                     $time = time();
-                    $model->documentid->saveAs('uploads/csv/' .$time. '.' . $model->documentid->extension);
+                    $model->documentid->saveAs('uploads/users/' .$time. '.' . $model->documentid->extension);
                     $model->document = 'uploads/users/' .$time. '.' . $model->documentid->extension;
                     $model->save(false);
                     Yii::$app->session->setFlash('success', "You have updated profile successfully.");
