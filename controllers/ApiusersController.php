@@ -6,6 +6,7 @@ use app\models\BankAccounts;
 use app\models\CartItems;
 use app\models\Carts;
 use app\models\Categories;
+use app\models\Cms;
 use app\models\Countries;
 use app\models\Faqs;
 use app\models\Products;
@@ -306,7 +307,7 @@ class ApiusersController extends ActiveController
                     $model->updated_at = date('Y-m-d H:i:s');
                     $save = $model->save();
                     if ($save){
-                        return array('status' => 1, 'message' => 'Data Updated Successfully');
+                        return array('status' => 1, 'message' => 'Profile picture Updated Successfully');
                     }else{
                         return array('status' => 0, 'message' => 'Data Not Updated');
                     }
@@ -319,6 +320,58 @@ class ApiusersController extends ActiveController
             }
         }
     }
+
+    public function actionUploadprofilepicture()
+    {
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $model = Users::findOne(['id'=>$this->user_id]);
+            $model->scenario = 'changepicture';
+            $model->attributes = Yii::$app->request->post();
+            $model->picture = $uploads = UploadedFile::getInstanceByName('picture');
+            if($model->validate()){
+
+                $newFileName = \Yii::$app->security
+                        ->generateRandomString().'.'.$model->picture->extension;
+                $model->image = 'uploads/users/'.$newFileName;
+                $model->picture->saveAs('uploads/users/' . $newFileName);
+                $model->picture = null;
+                if ($model->save(false)){
+                    return array('status' => 1, 'message' => 'You have changed your profile picture successfully.');
+
+                }else{
+                    return array('status' => 0, 'message' => $model->getErrors());
+                }
+
+            }else{
+                return array('status' => 0, 'message' => $model->getErrors());
+            }
+
+        }
+
+
+    }
+    public function actionDashboard()
+    {
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $user_id = $this->user_id;
+            $data['news'] = Cms::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $data['categories'] = Categories::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $data['carts'] = Carts::find()->where(['seller_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            return array('status' => 1, 'data' => $data);
+
+        }
+
+
+    }
+
 
     public function actionFaqs(){
         $method = $_SERVER['REQUEST_METHOD'];
@@ -442,6 +495,15 @@ class ApiusersController extends ActiveController
                     $model->scenario = 'addcart';
                     $model->attributes = Yii::$app->request->post();
                     if ($model->validate()) {
+                        $lat = $model->latitude;
+                        $long = $model->longitude;
+                        $distance = 240;
+                        $harvesformula = ($lat!='' && $long!='') ? '( 6371 * acos( cos( radians(' . $lat . ') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians(' . $long . ') ) + sin( radians(' . $lat . ') ) * sin( radians(latitude) ) ) ) as distance': '';
+                        $harvesformula1 = ($lat!='' && $long!='') ? '( 6371 * acos( cos( radians(' . $lat . ') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians(' . $long . ') ) + sin( radians(' . $lat . ') ) * sin( radians(latitude) ) ) )' : '';
+                        $nearbybuyer = Users::find()->select('id,latitude,longitude,'.$harvesformula)->where(['role'=>'Buyer','status'=>1])->andWhere(['<=', $harvesformula1, $distance])->orderBy(['distance'=>SORT_ASC])->one();
+                        if(!empty($nearbybuyer)){
+                            $model->buyer_id = $nearbybuyer->id;
+                        }
                         $model->seller_id = $this->user_id;
                         $model->created_at = date('Y-m-d H:i:s');
                         $items = json_decode($model->items);

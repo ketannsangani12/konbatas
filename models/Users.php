@@ -27,6 +27,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     protected $token;
     public $newpassword;
     public $documentid;
+    public $picture = '';
+
     /**
      * {@inheritdoc}
      */
@@ -66,6 +68,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['oldpassword', 'newpassword'], 'required','on' => 'changepassword'],
             [['documentid', 'country','state','latitude','longitude'], 'required','on' => 'uploaddocument'],
             [['documentid'], 'file',  'extensions' => 'jpeg,jpg,png'],
+            [['picture'], 'required', 'on' => 'changepicture'],
+            [['picture'], 'file', 'skipOnEmpty' => false,'extensions' => 'png,jpg,jpeg','on'=>'changepicture'],
 
 
             //[['oldpassword'], 'checkoldpassword','on' => 'changepassword'],

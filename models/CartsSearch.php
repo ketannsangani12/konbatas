@@ -43,7 +43,9 @@ class CartsSearch extends Carts
     public function search($params)
     {
         $query = Carts::find();
-
+        if(Yii::$app->user->identity->role!='Superadmin'){
+            $query->where(['buyer_id'=>Yii::$app->user->id]);
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -63,7 +65,7 @@ class CartsSearch extends Carts
         $query->andFilterWhere([
             'id' => $this->id,
             'seller_id' => $this->seller_id,
-            'buyer_id' => $this->buyer_id,
+            //'buyer_id' => $this->buyer_id,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'country_id' => $this->country_id,

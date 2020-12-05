@@ -18,13 +18,10 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-<!--                --><?//= $form->field($model, 'created_at')->textInput() ?>
-<!---->
-<!--                --><?//= $form->field($model, 'updated_at')->textInput() ?>
 
             </div>
             <div class="box-footer">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success btn-flat']) ?>
+                <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-flat']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

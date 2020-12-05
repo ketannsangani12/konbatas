@@ -41,6 +41,8 @@
                         'items' => [
                             ['label' => 'Countries', 'icon' => ' fa-adjust', 'url' => ['/countries']],
                             ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
+                            ['label' => 'Announcements', 'icon' => ' fa-adjust', 'url' => ['/announcements/create']],
+                            ['label' => 'Faqs', 'icon' => ' fa-adjust', 'url' => ['/faqs']],
 
                             ]
                         ],

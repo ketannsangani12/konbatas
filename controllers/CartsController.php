@@ -139,7 +139,7 @@ class CartsController extends Controller
             if($model->validate()) {
                 $newFileName = \Yii::$app->security
                         ->generateRandomString().'.'.$model->receipt->extension;
-                $model->document = $newFileName;
+                $model->document = 'uploads/receipts/'.$newFileName;
 
                 $model->updated_at = date('Y-m-d H:i:s');
                 if($model->save()) {

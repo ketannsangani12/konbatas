@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="faqs-index box box-primary">
     <div class="box-header with-border">
-        <?= Html::a('Create Faqs', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::a('Create Faqs', ['create'], ['class' => 'btn btn-primary btn-flat']) ?>
     </div>
     <div class="box-body table-responsive no-padding">
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

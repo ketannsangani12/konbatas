@@ -29,7 +29,9 @@
         "sizeg/yii2-jwt": "^2.0",
         "2amigos/qrcode-library": "~1.1",
         "kartik-v/yii2-widget-depdrop": "dev-master",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+        "understeam/yii2-fcm": "~0.1",
+        "marqu3s/yii2-summernote": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
