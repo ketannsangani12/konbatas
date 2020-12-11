@@ -322,6 +322,31 @@ class ApiusersController extends ActiveController
         }
     }
 
+    public function actionUpdatelocation(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['latitude']) && $_POST['latitude']!='' && isset($_POST['longitude']) && $_POST['longitude']!='') {
+
+                $user_id = $this->user_id;
+                $model = Users::find()->where(['id' => $user_id])->one();
+                $model->latitude = $_POST['latitude'];
+                $model->longitude = $_POST['longitude'];
+                if($model->save(false)){
+                    return array('status' => 1, 'message' => 'You have updated your location successfully.');
+
+                }else{
+                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+
+                }
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+
+            }
+        }
+    }
+
     public function actionUpdateprofile(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
