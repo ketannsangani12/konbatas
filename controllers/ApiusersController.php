@@ -593,12 +593,12 @@ class ApiusersController extends ActiveController
                           }else{
                               $transaction->rollBack();
 
-                              return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+                              return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes 23');
 
                           }
 
                         } else {
-                            return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+                            return array('status' => 0, 'message' => $model->getErrors());
                         }
                     } else {
                         return array('status' => 0, 'message' => $model->getErrors());
