@@ -8,6 +8,7 @@ use app\models\Carts;
 use app\models\Categories;
 use app\models\Cms;
 use app\models\Countries;
+use app\models\EmailTemplates;
 use app\models\Faqs;
 use app\models\Products;
 use app\models\States;
@@ -245,20 +246,26 @@ class ApiusersController extends ActiveController
                 $model->scenario = 'forgotpassword';
                 $model->attributes = Yii::$app->request->post();
                 if ($model->validate()) {
-                    $data = Users::find()->where(['email' => $model->email])->one();
+                    $data = Users::find()->where(['email' => $model->email,'role'=>'Seller'])->one();
                     if(!empty($data)){
-                        $data->password = md5('12345');
-                        $save = $data->save();
+                        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+
+                        $password = substr(str_shuffle($permitted_chars), 0, 10);
+                        $data->password = md5($password);
+                        $save = $data->save(false);
                         if($save) {
-                            Yii::$app->mailer->compose()
-                                ->setFrom('tlssocietyapps@gmail.com')
-                                ->setTo($data->email)
-                                ->setSubject('test')
-                                ->setTextBody('hellow world')
-                                ->setHtmlBody('<b>Your Password is</b>')
-                                ->setHtmlBody($data->password)
+                            $data->password = $password;
+
+                            $emailtemplate = EmailTemplates::findOne(['name'=>'User Forgot Password']);
+                            $content = EmailTemplates::getemailtemplate($emailtemplate,$data,'');
+
+                            $send = Yii::$app->mailer->compose()
+                                ->setFrom('konbatas@gmail.com')
+                                ->setTo($model->email)
+                                ->setSubject($emailtemplate->subject)
+                                ->setHtmlBody($content)
                                 ->send();
-                            return array('status' => 1, 'message' => 'Email Sent Successfully');
+                            return array('status' => 1, 'message' => 'New password Sent to your email Successfully');
                         }else{
                             return array('status' => 0, 'message' => 'Password Does Not Changed');
                         }

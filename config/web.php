@@ -93,8 +93,8 @@ $config = [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
-                'username' => 'tlssocietyapps@gmail.com',
-                'password' => 'jzvhfjgnteedaqbd',
+                'username' => 'konbatas@gmail.com',
+                'password' => 'pfkzchtphwgxpwla',
                 'port' => '587',
                 'encryption' => 'tls',
             ],
