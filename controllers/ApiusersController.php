@@ -606,7 +606,7 @@ class ApiusersController extends ActiveController
                 }catch (Exception $e) {
                     // # if error occurs then rollback all transactions
                     $transaction->rollBack();
-                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes');
+                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes 1232'.$e->getMessage());
 
                 }
             } else {
