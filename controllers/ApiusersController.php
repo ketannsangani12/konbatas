@@ -10,6 +10,7 @@ use app\models\Cms;
 use app\models\Countries;
 use app\models\Faqs;
 use app\models\Products;
+use app\models\States;
 use Da\QrCode\QrCode;
 use sizeg\jwt\JwtHttpBearerAuth;
 use yii\db\ActiveQuery;
@@ -98,7 +99,7 @@ class ApiusersController extends ActiveController
         header("Access-Control-Allow-Headers: X-Requested-With,token,user");
         parent::beforeAction($action);
 
-        if ($action->actionMethod != 'actionLogin' && $action->actionMethod != 'actionRegister' && $action->actionMethod!='actionForgotpassword' && $action->actionMethod!='actionAddrefferal' && $action->actionMethod!='actionVerifyotp' && $action->actionMethod!='actionResendotp') {
+        if ($action->actionMethod != 'actionLogin' && $action->actionMethod != 'actionRegister' && $action->actionMethod!='actionForgotpassword' && $action->actionMethod!='actionAddrefferal' && $action->actionMethod!='actionVerifyotp' && $action->actionMethod!='actionResendotp' && $action->actionMethod!='actionCountries' && $action->actionMethod!='actionStates') {
             $headers = Yii::$app->request->headers;
             if(!empty($headers) && isset($headers['token']) && $headers['token']!=''){
                 try{
@@ -192,7 +193,7 @@ class ApiusersController extends ActiveController
                     if(!empty($data)){
                         $token = (string)Users::generateToken($data);
                         $countrydetail = Countries::findOne($data['country']);
-                        $data['currency'] = $countrydetail->currency;
+                        $data['currency'] = (!empty($countrydetail))?$countrydetail->currency:'';
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
@@ -203,6 +204,33 @@ class ApiusersController extends ActiveController
             }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
             }
+        }
+    }
+    public function actionCountries(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $countries = Countries::find()->asArray()->all();
+            return array('status' => 1, 'data' => $countries);
+
+        }
+    }
+
+    public function actionStates(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if(!empty($_POST) && isset($_POST['country']) && $_POST['country']!=''){
+                $countries = States::find()->where(['country_id'=>$_POST['country']])->asArray()->all();
+                return array('status' => 1, 'data' => $countries);
+
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+
+            }
+
         }
     }
 
