@@ -194,6 +194,7 @@ class ApiusersController extends ActiveController
                         $token = (string)Users::generateToken($data);
                         $countrydetail = Countries::findOne($data['country']);
                         $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
+                        $data['country']  = $countrydetail->name;
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
