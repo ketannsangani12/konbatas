@@ -79,6 +79,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'update' => function ($model) {
                             return ($model->status=='Processing');
                         },
+                        'deliver' => function ($model) {
+                            return ($model->status=='Accepted');
+                        },
 
                     ],
                     'buttons'=>[
