@@ -52,9 +52,10 @@ class Carts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['currency','latitude','longitude','country_id','address','tax','items','delivery_fee'], 'required' ,'on' => 'addcart'],
+            [['currency','latitude','longitude','country_id','tax','items','delivery_fee'], 'required' ,'on' => 'addcart'],
             [['status'], 'required' ,'on' => 'acceptorreject'],
             [['status','receipt'], 'required' ,'on' => 'deliverorder'],
+            [['type','address'], 'required' ,'on' => 'placeorder'],
             [['receipt'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpeg,jpg,png,pdf'],
             [['seller_id', 'buyer_id', 'country_id', 'state_id'], 'integer'],
             [['latitude', 'longitude', 'subtotal', 'delivery_fee', 'tax', 'total'], 'number'],
@@ -85,6 +86,7 @@ class Carts extends \yii\db\ActiveRecord
             'country_id' => 'Country',
             'state_id' => 'State',
             'address' => 'Address',
+            'address_id'=>'Address',
             'subtotal' => 'Subtotal',
             'delivery_fee' => 'Delivery Fee',
             'tax' => 'Tax',
@@ -129,6 +131,11 @@ class Carts extends \yii\db\ActiveRecord
     public function getCountry()
     {
         return $this->hasOne(Countries::className(), ['ID' => 'country_id']);
+    }
+
+    public function getPickupaddress()
+    {
+        return $this->hasOne(Addreses::className(), ['id' => 'address_id']);
     }
 
     /**

@@ -554,6 +554,9 @@ class ApiusersController extends ActiveController
                 'cartitems'=>function ($query) {
                     $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
                 },
+                'pickupaddress'=>function ($query) {
+                    $query->select(['id','first_name','last_name','address','city','state','mobile_no','address_type']);
+                },
                 'cartitems.product'=>function ($query) {
                     $query->select(['id','category_id','brand','part_number','secondary_part_number','description']);
                 },
@@ -648,7 +651,7 @@ class ApiusersController extends ActiveController
                               $model->save(false);
                               $transaction->commit();
 
-                              return array('status' => 1, 'message' => 'You have added Cart Successfully.');
+                              return array('status' => 1, 'message' => 'You have added Cart Successfully.','cart_no'=>$model->order_no);
 
                           }else{
                               $transaction->rollBack();
@@ -700,6 +703,42 @@ class ApiusersController extends ActiveController
             }
         }
     }
+    public function actionPlaceorder(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['cart_id']) && $_POST['cart_id'] != '') {
+                $cartmodel = Carts::find()->where(['status'=>'Accepted','id'=>$_POST['cart_id']])->one();
+                if(empty($cartmodel)){
+                    return array('status' => 0, 'message' => 'No cart detail found.');
+
+                }
+                $cartmodel->scenario = 'placeorder';
+                $cartmodel->attributes = Yii::$app->request->post();
+                if($cartmodel->validate()) {
+                    if($cartmodel->type=='Pickup'){
+                        $cartmodel->address_id = $cartmodel->address;
+                        $cartmodel->address = null;
+                    }
+
+                    if ($cartmodel->save(false)) {
+                        return array('status' => 1, 'message' => 'You have updated Cart Successfully.');
+
+                    } else {
+                        return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
+
+                    }
+                }else{
+                    return array('status' => 0, 'message' => $cartmodel->getErrors());
+
+                }
+
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
 
     public function actionAddaddress(){
         $method = $_SERVER['REQUEST_METHOD'];
@@ -729,6 +768,16 @@ class ApiusersController extends ActiveController
                 }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
             }
+        }
+    }
+    public function actionAddresses(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $addresses = Addreses::find()->where(['user_id'=>$this->user_id])->asArray()->all();
+            return array('status' => 1, 'data' => $addresses);
+
         }
     }
 
