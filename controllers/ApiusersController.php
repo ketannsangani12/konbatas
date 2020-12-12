@@ -10,6 +10,7 @@ use app\models\Cms;
 use app\models\Countries;
 use app\models\EmailTemplates;
 use app\models\Faqs;
+use app\models\MetalsPrices;
 use app\models\Products;
 use app\models\States;
 use Da\QrCode\QrCode;
@@ -160,11 +161,12 @@ class ApiusersController extends ActiveController
 
                 if($model->validate()){
                     $model->role = 'Seller';
+                    $model->membership_level = 'Green';
                     $model->password = md5(Yii::$app->request->post('password'));
                     $model->verify_token = Yii::$app->getSecurity()->generateRandomString();
                     $model->created_at = date('Y-m-d h:i:s');
 
-                    $save = $model->save();
+                    $save = $model->save(false);
                     if($save) {
                         return array('status' => 1, 'message' => 'You have Registered  Successfully.We have sent you OTP on your mobile number,Please verify it.','user_id'=>$model->id);
                     }else{
@@ -321,6 +323,7 @@ class ApiusersController extends ActiveController
         } else {
             $user_id = $this->user_id;
             $data = Users::find()->where(['id' => $user_id])->asArray()->one();
+            $data['bankaccount'] = BankAccounts::find()->where(['user_id'=>$user_id])->asArray()->one();
             if (!empty($data)) {
                 return array('status' => 1, 'data' => $data);
             }else{
@@ -450,7 +453,11 @@ class ApiusersController extends ActiveController
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             if (!empty($_POST) && isset($_POST['category_id']) && $_POST['category_id'] != '') {
-                    $data = Products::find()->where(['category_id' => $_POST['category_id']])->asArray()->all();
+                    $data = Products::find()->with([
+                        'pictures'=>function ($query) {
+                            $query->select(['id','product_id','image'])->one();
+                        },
+                    ])->where(['category_id' => $_POST['category_id']])->asArray()->all();
                     return array('status' => 1, 'data' => $data);
             }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
@@ -480,18 +487,31 @@ class ApiusersController extends ActiveController
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             if (!empty($_POST)) {
-                $model = new BankAccounts();
-                $model->scenario = 'addbankaccount';
+                $user_id = $this->user_id;
+                $bankaccountexist = BankAccounts::find()->where(['user_id'=>$user_id])->one();
+                if(!empty($bankaccountexist)){
+                    $model = $bankaccountexist;
+
+                }else{
+                    $model = new BankAccounts();
+                    $model->scenario = 'addbankaccount';
+                }
                 $model->attributes = Yii::$app->request->post();
                 if($model->validate()){
                     $model->user_id = $this->user_id;
-                    $model->document_image = 'test.jpeg';
-                    $model->created_at = date('Y-m-d H:i:s');
+                    if(isset($model->document) && $model->document!='') {
+                        $filename = uniqid();
+
+                        $data = Yii::$app->common->processBase64($model->document);
+
+                        file_put_contents('uploads/users/' . $filename . '.' . $data['type'], $data['data']);
+                        $model->document_image = 'uploads/users/' . $filename . '.' . $data['type'];
+                    }
                     $model->updated_at = date('Y-m-d H:i:s');
 
-                    $save = $model->save();
+                    $save = $model->save(false);
                     if($save) {
-                        return array('status' => 1, 'message' => 'You have add bank Details Successfully.');
+                        return array('status' => 1, 'message' => 'You have updated bank Details Successfully.');
                     }else{
                         return array('status' => 0, 'message' => 'somthing Went wrong');
                     }
@@ -538,6 +558,25 @@ class ApiusersController extends ActiveController
                 },
             ])->where(['seller_id'=>$user_id])->orderBy(['created_at'=>SORT_DESC])->asArray()->all();
             return array('status' => 1, 'data' => $carts);
+
+
+        }
+    }
+    public function actionGraph(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $prices = MetalsPrices::find()->limit(10)
+->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $prices1 = array();
+            if(!empty($prices)){
+                foreach ($prices as $key=>$price){
+                    $prices[$key]['created_at'] = date('d-M-Y',strtotime($price['created_at']));
+
+                }
+            }
+            return array('status' => 1, 'data' => $prices);
 
 
         }

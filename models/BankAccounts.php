@@ -25,6 +25,7 @@ use Yii;
  */
 class BankAccounts extends \yii\db\ActiveRecord
 {
+    public $document;
     /**
      * {@inheritdoc}
      */
@@ -39,14 +40,14 @@ class BankAccounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['account_number','account_name','bank_name','swift_code','address','suburb','city','state'], 'required' ,'on' => 'addbankaccount'],
+            [['account_number','account_name','bank_name','swift_code','address','suburb','city','state','document'], 'required' ,'on' => 'addbankaccount'],
             [['account_number'], 'unique','on'=>'addbankaccount'],
             //[['user_id','account_number','account_name','bank_name','swift_code','document_image','address','suburb','city','state'], 'required'],
             [['user_id'], 'integer'],
             ['user_id','default','value'=>1],
 //            [['document_image'],'file','skipOnEmpty' => false, 'extensions' => 'jpg, png'],
             [['created_at', 'updated_at'], 'safe'],
-            [['account_number'], 'string', 'max' => 51],
+            [['account_number'], 'string', 'max' => 255],
             [['account_name', 'bank_name', 'swift_code', 'document_image', 'address', 'suburb', 'city', 'state'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -65,6 +66,7 @@ class BankAccounts extends \yii\db\ActiveRecord
             'bank_name' => 'Bank Name',
             'swift_code' => 'Swift Code',
             'document_image' => 'Document Image',
+            'document'=>'Document',
             'address' => 'Address',
             'suburb' => 'Suburb',
             'city' => 'City',
