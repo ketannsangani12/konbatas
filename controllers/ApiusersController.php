@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Addreses;
 use app\models\BankAccounts;
 use app\models\CartItems;
 use app\models\Carts;
@@ -195,9 +196,11 @@ class ApiusersController extends ActiveController
                     $data = Users::find()->where(['email' => $model->email ,'password' => md5($model->password),'role'=>'Seller'])->asArray()->one();
                     if(!empty($data)){
                         $token = (string)Users::generateToken($data);
-                        $countrydetail = Countries::findOne($data['country']);
+                        $countrydetail = ($data['country']!='')?Countries::findOne($data['country']):'';
+                        $statedetail = ($data['state']!='')?States::findOne($data['state']):'';
                         $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
-                        $data['country']  = $countrydetail->name;
+                        $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
+                        $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
@@ -324,6 +327,7 @@ class ApiusersController extends ActiveController
             $user_id = $this->user_id;
             $data = Users::find()->where(['id' => $user_id])->asArray()->one();
             $data['bankaccount'] = BankAccounts::find()->where(['user_id'=>$user_id])->asArray()->one();
+
             if (!empty($data)) {
                 return array('status' => 1, 'data' => $data);
             }else{
@@ -567,8 +571,18 @@ class ApiusersController extends ActiveController
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
-            $prices = MetalsPrices::find()->limit(10)
-->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $fromdate = (isset($_POST['fromdate']) && !empty($_POST['fromdate']))?(date('Y-m-d 00:00:00',strtotime($_POST['fromdate']))):'';
+            $todate = (isset($_POST['todate']) && !empty($_POST['todate']))?(date('Y-m-d 11:59:59',strtotime($_POST['todate']))):'';
+
+            $query = MetalsPrices::find();
+            if($fromdate!='' && $todate!=''){
+                // $start = Yii::$app->formatter->asTimestamp($fromdate);
+                //$end = Yii::$app->formatter->asTimestamp($todate);
+                //$query->andWhere(['between', 'date', $start, $end]);
+
+                $query->andWhere(['>=','DATE(created_at)', $fromdate])->andWhere(['<=','DATE(created_at)', $todate]);
+            }
+          $prices =   $query->orderBy(['id'=>SORT_ASC])->asArray()->all();
             $prices1 = array();
             if(!empty($prices)){
                 foreach ($prices as $key=>$price){
@@ -639,7 +653,7 @@ class ApiusersController extends ActiveController
                           }else{
                               $transaction->rollBack();
 
-                              return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes 23');
+                              return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
 
                           }
 
@@ -652,7 +666,7 @@ class ApiusersController extends ActiveController
                 }catch (Exception $e) {
                     // # if error occurs then rollback all transactions
                     $transaction->rollBack();
-                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes 1232'.$e->getMessage());
+                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
 
                 }
             } else {
@@ -660,6 +674,64 @@ class ApiusersController extends ActiveController
             }
         }
     }
+    public function actionRetractcart(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['cart_id']) && $_POST['cart_id'] != '') {
+                $cartmodel = Carts::findOne($_POST['cart_id']);
+                if(empty($cartmodel)){
+                    return array('status' => 0, 'message' => 'No cart detail found.');
+
+                }
+                $cartmodel->status = 'Cancelled';
+                $cartmodel->updated_at = date('Y-m-d H:i:s');
+                if($cartmodel->save(false)){
+                    return array('status' => 1, 'message' => 'You have retracted Cart Successfully.');
+
+                }else{
+                    return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
+
+                }
+
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
+
+    public function actionAddaddress(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) ) {
+                $model = new Addreses();
+                $model->scenario = 'add';
+                $model->attributes = Yii::$app->request->post();
+                if ($model->validate()) {
+                    $model->user_id = $this->user_id;
+                    $model->created_at = date('Y-m-d H:i:s');
+                    if($model->save(false)){
+                        return array('status' => 1, 'message' => 'You have added Address Successfully.');
+
+                    }else{
+                        return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
+
+                    }
+
+                }else{
+                    return array('status' => 0, 'message' => $model->getErrors());
+
+                }
+
+                }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
+
    public function actionGetconversionrate(){
        $currency = $this->currency;
        if($currency!=''){
