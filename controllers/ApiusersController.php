@@ -212,7 +212,7 @@ class ApiusersController extends ActiveController
                         $statedetail = ($data['state']!='')?States::findOne($data['state']):'';
                         $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
                         $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
-                        $data['country_id']  = (!empty($countrydetail))?$countrydetail->id:'';
+                        $data['country_id']  = (!empty($countrydetail))?$countrydetail->ID:'';
                         $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
                         $contact_no = $data['contact_no'];
                         if($contact_no!='' && $data['status']==2){
@@ -220,9 +220,12 @@ class ApiusersController extends ActiveController
                             $userdetails = Users::findOne($data['id']);
                             $userdetails->otp = $code;
                             $userdetails->save(false);
+                            return array('status' => 1, 'message' => 'Your account is not verified.Please verify using OTP.', 'data' => $contact_no,'token' => $token);
 
+
+                        }else {
+                            return array('status' => 1, 'message' => 'You have Logged  Successfully', 'data' => $data, 'token' => $token);
                         }
-                        return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
                     }
@@ -351,7 +354,7 @@ class ApiusersController extends ActiveController
             $statedetail = ($data['state']!='')?States::findOne($data['state']):'';
             $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
             $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
-            $data['country_id']  = (!empty($countrydetail))?$countrydetail->id:'';
+            $data['country_id']  = (!empty($countrydetail))?$countrydetail->ID:'';
             $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
 
             $data['bankaccount'] = BankAccounts::find()->where(['user_id'=>$user_id])->asArray()->one();
