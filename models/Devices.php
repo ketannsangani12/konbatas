@@ -24,7 +24,7 @@ class Devices extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tls_devices';
+        return 'konbatas_devices';
     }
 
     /**
@@ -34,11 +34,9 @@ class Devices extends \yii\db\ActiveRecord
     {
         return [
             [['device_token', 'user_id'], 'required', 'on' => 'saveuserdevice'],
-            [['device_token', 'merchant_id'], 'required', 'on' => 'savemerchantdevice'],
-            [['user_id', 'merchant_id'], 'integer'],
+            [['user_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['device_token'], 'string', 'max' => 255],
-            [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Merchants::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -51,7 +49,6 @@ class Devices extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'merchant_id' => 'Merchant ID',
             'device_token' => 'Device Token',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -59,12 +56,7 @@ class Devices extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMerchant()
-    {
-        return $this->hasOne(Merchants::className(), ['id' => 'merchant_id']);
-    }
+
 
     /**
      * @return \yii\db\ActiveQuery

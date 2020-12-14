@@ -9,9 +9,11 @@ use app\models\Carts;
 use app\models\Categories;
 use app\models\Cms;
 use app\models\Countries;
+use app\models\Devices;
 use app\models\EmailTemplates;
 use app\models\Faqs;
 use app\models\MetalsPrices;
+use app\models\Notifications;
 use app\models\Products;
 use app\models\States;
 use Da\QrCode\QrCode;
@@ -487,6 +489,43 @@ class ApiusersController extends ActiveController
 
 
     }
+    public function actionSavedevice()
+    {
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+                $userid = $this->user_id;
+                $model = new Devices();
+                $model->scenario = 'saveuserdevice';
+                $model->attributes = Yii::$app->request->post();
+                $model->user_id = $userid;
+                if($model->validate()){
+
+                    $usermodel = Devices::findOne(['user_id'=>$userid,'device_token'=>$model->device_token]);
+                    if (!empty($usermodel)){
+                        return array('status' => 0, 'message' => 'You have already added this device.');
+                    }else{
+                        $model->created_at = date('Y-m-d H:i:s');
+                        if($model->save()){
+                            return array('status' => 1, 'message' => 'You have saved device successfullly.');
+
+                        }else{
+                            return array('status' => 0, 'message' => 'Something went wrong.Please try after sometimes.');
+
+                        }
+                    }
+
+                }else{
+                    return array('status' => 0, 'message' => $model->getErrors());
+                }
+
+        }
+
+
+    }
+
     public function actionDashboard()
     {
 
@@ -499,6 +538,26 @@ class ApiusersController extends ActiveController
             $data['categories'] = Categories::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
             $data['carts'] = Carts::find()->where(['seller_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
             return array('status' => 1, 'data' => $data);
+
+        }
+
+
+    }
+    public function actionNotifications()
+    {
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $baseurl = $this->baseurl;
+                $user_id = $this->user_id;
+                $notifications = Notifications::find()->where(['receiver_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
+                return array('status' => 1, 'data' => $notifications);
+
+
+
+
 
         }
 
@@ -521,12 +580,29 @@ class ApiusersController extends ActiveController
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
-            if (!empty($_POST) && isset($_POST['category_id']) && $_POST['category_id'] != '') {
-                    $data = Products::find()->with([
+            if (!empty($_POST)) {
+                    $search = (isset($_POST['search']) && $_POST['search']!='')?$_POST['search']:'';
+                    $category = (isset($_POST['category_id']) && $_POST['category_id']!='')?$_POST['category_id']:'';
+
+                    $query = Products::find()->with([
                         'pictures'=>function ($query) {
                             $query->select(['id','product_id','image'])->one();
                         },
-                    ])->where(['category_id' => $_POST['category_id']])->asArray()->all();
+                        'category'=>function ($query) {
+                            $query->select(['id','name'])->one();
+                        },
+                    ]);
+                    if($category!='') {
+                        $query->where(['category_id' => $_POST['category_id']]);
+                    }
+                   if($search!=''){
+                       $query->where(['like', 'part_number', $search]);
+                       $query->orWhere(['like', 'brand', $search]);
+
+
+                   }
+
+                    $data = $query->asArray()->all();
                     return array('status' => 1, 'data' => $data);
             }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
@@ -594,7 +670,7 @@ class ApiusersController extends ActiveController
                     if($save) {
                         return array('status' => 1, 'message' => 'You have updated bank Details Successfully.');
                     }else{
-                        return array('status' => 0, 'message' => 'somthing Went wrong');
+                        return array('status' => 0, 'message' => 'Something Went wrong.');
                     }
                 }else{
                     return array('status' => 0, 'message' => $model->getErrors());
@@ -630,6 +706,9 @@ class ApiusersController extends ActiveController
             $carts = Carts::find()->select('*')->with([
                 'cartitems'=>function ($query) {
                     $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
+                },
+                'buyer'=>function ($query) {
+                    $query->select(['id','full_name','company_name','address']);
                 },
                 'pickupaddress'=>function ($query) {
                     $query->select(['id','first_name','last_name','address','city','state','mobile_no','address_type']);

@@ -85,30 +85,28 @@ class AnnouncementsController extends Controller
                 $model->created_at = date('Y-m-d h:i:s');
                 $model->datetime = date('Y-m-d H:i:s', strtotime($model->datetime));
                 if ($model->save()) {
-//                    if($model->type=='Customer'){
-//                        $devices = Devices::find()->where(['!=', 'user_id', ''])->all();
-//                        //print_r($devices);exit;
-//                        if(!empty($devices)) {
-//                            $note = Yii::$app->fcm1->createNotification($model->subject, $model->description);
-//                            $note->setIcon('fcm_push_icon')->setSound('default')->setClickAction('FCM_PLUGIN_ACTIVITY')
-//                                ->setColor('#ffffff');
-//
-//                            $message = Yii::$app->fcm1->createMessage()
-//                                ->setData([
-//                                'notification_type' => 'announcement',
-//                                'title' => $model->subject,
-//                                'body' => $model->description
-//                            ]);
-//
-//                            foreach ($devices as $device) {
-//                                $message->addRecipient(new Device($device->device_token));
-//                            }
-//
-//                            $message->setNotification($note);
-//
-//                            $response = Yii::$app->fcm1->send($message);
-//                        }
-//                    }
+                        $devices = Devices::find()->where(['!=', 'user_id', ''])->all();
+                        if(!empty($devices)) {
+                            $note = Yii::$app->fcm1->createNotification($model->subject, $model->description);
+                            $note->setIcon('fcm_push_icon')->setSound('default')->setClickAction('FCM_PLUGIN_ACTIVITY')
+                                ->setColor('#ffffff');
+
+                            $message = Yii::$app->fcm1->createMessage()
+                                ->setData([
+                                'notification_type' => 'announcement',
+                                'title' => $model->subject,
+                                'body' => $model->description
+                            ]);
+
+                            foreach ($devices as $device) {
+                                $message->addRecipient(new Device($device->device_token));
+                            }
+
+                            $message->setNotification($note);
+
+                            $response = Yii::$app->fcm1->send($message);
+                        }
+
 //                    if($model->type=='Merchant'){
 //                        $devices = Devices::find()->where(['!=', 'merchant_id', ''])->all();
 //                        //print_r($devices);exit;

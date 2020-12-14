@@ -72,6 +72,10 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Xh3Opf8DjgFq3xMGcushTBaRaVNV77Kg',
         ],
+        'fcm1' => [
+            'class' => 'understeam\fcm\Client',
+            'apiKey' => 'AAAAcp7B4g0:APA91bHCsou8Nrj2vdFM6EScXYQJDAKNOIPexmzFzZ0xRp2S7Mg14DP4BVWyAEfEllHPJ-CW0DCfdDdikm1pAItWqMuN0nnT8r2vqKH1yq48sRLlRVVtVHE3E65gsu-lDCHGtsCh-nC0', // Server API Key (you can get it here: https://firebase.google.com/docs/server/setup#prerequisites)
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

@@ -43,25 +43,48 @@ $this->params['breadcrumbs'][] = $this->title;
                         return (isset($model->country->name))?$model->country->name:'';
                     }
                 ],
-                [
-                    'label'=>'State',
+//                [
+//                    'label'=>'State',
+//
+//                    'value'=>function($model){
+//                        return (isset($model->state->name))?$model->state->name:'';
+//                    }
+//                ],
 
-                    'value'=>function($model){
-                        return (isset($model->state->name))?$model->state->name:'';
-                    }
-                ],
                 'currency',
                 'latitude',
                 'longitude',
-                'address:ntext',
                 'subtotal',
                 'delivery_fee',
                 'tax',
                 'total',
                 'type',
-                'status',
+                [
+                    'label'=>'Address',
+
+                    'value'=>function($model){
+                        if($model->type=='Pickup'){
+                            return $model->pickupaddress->address;
+                        }else if($model->type=='Delivery'){
+                            return $model->address;
+
+                        }else{
+                            return '';
+                        }
+
+                    }
+                ],
+                [
+                    'attribute' => 'status',
+                    'label' => 'Status',
+                    'value' => function ($model) {
+                        return Yii::$app->common->getStatus($model->status);
+                    },
+                    'format' => 'raw',
+                ],
+                //'status',
                 //'order_placed',
-                'payment_date',
+                //'payment_date',
                 'created_at:datetime',
                // 'updated_at:datetime',
             ],

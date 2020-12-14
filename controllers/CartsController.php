@@ -3,6 +3,10 @@
 namespace app\controllers;
 
 use app\models\CartItems;
+use app\models\Devices;
+use app\models\Notifications;
+use app\models\Users;
+use paragraph1\phpFCM\Recipient\Device;
 use Yii;
 use app\models\Carts;
 use app\models\CartsSearch;
@@ -107,9 +111,49 @@ class CartsController extends Controller
         $model->scenario = 'acceptorreject';
         if ($model->load(Yii::$app->request->post())) {
             if($model->validate()) {
-                $model->buyer_id = Yii::$app->user->id;
                 $model->updated_at = date('Y-m-d H:i:s');
-                if($model->save()) {
+                if($model->save(false)) {
+                    if(!empty($model->buyer_id)){
+                        $buyerdetails = Users::findOne($model->buyer_id);
+                        $full_name = $buyerdetails->full_name;
+                        $buyer_id = $model->buyer_id;
+                    }else{
+                        $full_name = 'Admin';
+                        $buyer_id = 1;
+                    }
+                    $subject = "Cart ".$model->status." - ".$model->order_no;
+                    $textmessage = "Your cart has ".$model->status." by ".$full_name;
+                    $notificationmodel = new Notifications();
+                    $notificationmodel->sender_id = $buyer_id;
+                    $notificationmodel->receiver_id = $model->seller_id;
+                    $notificationmodel->transaction_id = $id;
+                    $notificationmodel->subject = $subject;
+                    $notificationmodel->text = $textmessage;
+                    $notificationmodel->created_at = date('Y-m-d H:i:s');
+                    $notificationmodel->save(false);
+                    if($subject!='' && $textmessage!='' ) {
+                        $devices = Devices::find()->where(['user_id' => $model->seller_id])->all();
+                        if (!empty($devices)) {
+                            $note = Yii::$app->fcm1->createNotification($subject, $textmessage);
+                            $note->setIcon('fcm_push_icon')->setSound('default')->setClickAction('FCM_PLUGIN_ACTIVITY')
+                                ->setColor('#ffffff');
+
+                            $message = Yii::$app->fcm1->createMessage();
+
+                            foreach ($devices as $device) {
+                                $message->addRecipient(new Device($device->device_token));
+                            }
+
+                            $message->setNotification($note)
+                                ->setData([
+                                    'title' => $subject,
+                                    'body' => $textmessage
+                                ]);
+
+                            $response = Yii::$app->fcm1->send($message);
+                        }
+                    }
+
                     return $this->redirect(['index']);
                 }
 
@@ -142,9 +186,48 @@ class CartsController extends Controller
                 $model->document = 'uploads/receipts/'.$newFileName;
 
                 $model->updated_at = date('Y-m-d H:i:s');
-                if($model->save()) {
+                if($model->save(false)) {
                     $model->receipt->saveAs('uploads/receipts/' . $newFileName);
+                    if(!empty($model->buyer_id)){
+                        $buyerdetails = Users::findOne($model->buyer_id);
+                        $full_name = $buyerdetails->full_name;
+                        $buyer_id = $model->buyer_id;
+                    }else{
+                        $full_name = 'Admin';
+                        $buyer_id = 1;
+                    }
+                    $subject = "Cart Delivered - ".$model->order_no;
+                    $textmessage = "Your cart has Delivered to ".$full_name;
+                    $notificationmodel = new Notifications();
+                    $notificationmodel->sender_id = $buyer_id;
+                    $notificationmodel->receiver_id = $model->seller_id;
+                    $notificationmodel->transaction_id = $id;
+                    $notificationmodel->subject = $subject;
+                    $notificationmodel->text = $textmessage;
+                    $notificationmodel->created_at = date('Y-m-d H:i:s');
+                    $notificationmodel->save(false);
+                    if($subject!='' && $textmessage!='' ) {
+                        $devices = Devices::find()->where(['user_id' => $model->seller_id])->all();
+                        if (!empty($devices)) {
+                            $note = Yii::$app->fcm1->createNotification($subject, $textmessage);
+                            $note->setIcon('fcm_push_icon')->setSound('default')->setClickAction('FCM_PLUGIN_ACTIVITY')
+                                ->setColor('#ffffff');
 
+                            $message = Yii::$app->fcm1->createMessage();
+
+                            foreach ($devices as $device) {
+                                $message->addRecipient(new Device($device->device_token));
+                            }
+
+                            $message->setNotification($note)
+                                ->setData([
+                                    'title' => $subject,
+                                    'body' => $textmessage
+                                ]);
+
+                            $response = Yii::$app->fcm1->send($message);
+                        }
+                    }
                     return $this->redirect(['index']);
                 }
 
