@@ -220,11 +220,11 @@ class ApiusersController extends ActiveController
                             $userdetails = Users::findOne($data['id']);
                             $userdetails->otp = $code;
                             $userdetails->save(false);
-                            return array('status' => 1, 'message' => 'Your account is not verified.Please verify using OTP.', 'data' => $contact_no,'token' => $token);
+                            return array('status' => 1, 'message' => 'Your account is not verified.Please verify using OTP.', 'data' => $data,'token' => $token);
 
 
                         }else {
-                            return array('status' => 1, 'message' => 'You have Logged  Successfully', 'data' => $data, 'token' => $token);
+                            return array('status' => 1, 'message' => 'You have Logged In Successfully', 'data' => $data, 'token' => $token);
                         }
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
@@ -237,6 +237,40 @@ class ApiusersController extends ActiveController
             }
         }
     }
+    public function actionVerifyotp(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) && isset($_POST['contact_no']) && $_POST['contact_no']!='' && isset($_POST['otp']) && $_POST['otp']!='') {
+                $contact_no = $_POST['contact_no'];
+                $otp = $_POST['otp'];
+                $curl = curl_init();
+                $model = Users::find()->where(['contact_no'=>$contact_no,'role'=>'Seller'])->one();
+                if(empty($model)){
+                    return array('status' => 0, 'message' => 'User details not found.');
+
+                }
+                if($otp==$model->otp){
+                    $model->status = 1;
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $model->save(false);
+                    return array('status' => 1, 'message' => 'Your account have Verified Successfully.');
+
+                }else{
+                    return array('status' => 0, 'message' => 'You have entered wrong OTP.');
+
+                }
+//60126479285
+
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+
+            }
+        }
+
+    }
+
     public function actionCountries(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
@@ -524,9 +558,10 @@ class ApiusersController extends ActiveController
             if (!empty($_POST)) {
                 $user_id = $this->user_id;
                 $bankaccountexist = BankAccounts::find()->where(['user_id'=>$user_id])->one();
+                $document = '';
                 if(!empty($bankaccountexist)){
                     $model = $bankaccountexist;
-
+                    $document = (isset($_POST['document']) && $_POST['document']!='')?$_POST['document']:'';
                 }else{
                     $model = new BankAccounts();
                     $model->scenario = 'addbankaccount';
@@ -534,13 +569,24 @@ class ApiusersController extends ActiveController
                 $model->attributes = Yii::$app->request->post();
                 if($model->validate()){
                     $model->user_id = $this->user_id;
-                    if(isset($model->document) && $model->document!='') {
-                        $filename = uniqid();
+                    if(!empty($bankaccountexist)){
+                        if ($document != '') {
+                            $filename = uniqid();
 
-                        $data = Yii::$app->common->processBase64($model->document);
+                            $data = Yii::$app->common->processBase64($document);
 
-                        file_put_contents('uploads/users/' . $filename . '.' . $data['type'], $data['data']);
-                        $model->document_image = 'uploads/users/' . $filename . '.' . $data['type'];
+                            file_put_contents('uploads/users/' . $filename . '.' . $data['type'], $data['data']);
+                            $model->document_image = 'uploads/users/' . $filename . '.' . $data['type'];
+                        }
+                    }else {
+                        if (isset($model->document) && $model->document != '') {
+                            $filename = uniqid();
+
+                            $data = Yii::$app->common->processBase64($model->document);
+
+                            file_put_contents('uploads/users/' . $filename . '.' . $data['type'], $data['data']);
+                            $model->document_image = 'uploads/users/' . $filename . '.' . $data['type'];
+                        }
                     }
                     $model->updated_at = date('Y-m-d H:i:s');
 

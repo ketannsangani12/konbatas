@@ -51,8 +51,8 @@ class Common extends Component
                 return "<span class='btn btn-warning btn-xs'>Processing</span>";
 
                 break;
-            case "Approved";
-                return "<span class='btn bg-green btn-xs'>Approved</span>";
+            case "Accepted";
+                return "<span class='btn bg-green btn-xs'>Accepted</span>";
                 break;
             case "Delivered";
                 return "<span class='btn bg-green btn-xs'>Delivered</span>";

@@ -43,10 +43,11 @@
                             ['label' => 'States', 'icon' => ' fa-adjust', 'url' => ['/states']],
                             ['label' => 'Announcements', 'icon' => ' fa-adjust', 'url' => ['/announcements/create']],
                             ['label' => 'Faqs', 'icon' => ' fa-adjust', 'url' => ['/faqs']],
+                            ['label' => 'News', 'icon' => ' fa-adjust', 'url' => ['/cms']],
 
                             ]
                         ],
-                    ['label' => 'Carts', 'icon' => ' fa-shopping-cart', 'url' => ['/carts'],'active'=>($item == 'carts'),'visible'=>true,
+                    ['label' => 'Orders', 'icon' => ' fa-shopping-cart', 'url' => ['/carts'],'active'=>($item == 'carts'),'visible'=>true,
                     ],
                     ['label' => 'Sellers', 'icon' => ' fa-users', 'url' => ['/sellers'],'active'=>($item == 'sellers'),'visible'=>(Yii::$app->user->identity->role=='Superadmin'),
                     ],

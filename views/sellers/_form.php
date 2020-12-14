@@ -34,6 +34,19 @@ use yii\widgets\ActiveForm;
                 'allowClear' => true
             ],
         ]); ?>
+        <?=
+        $form->field($model, 'state')->widget(\kartik\depdrop\DepDrop::classname(), [
+            'data' => (!$model->isNewRecord)?\yii\helpers\ArrayHelper::map(\app\models\States::find()->where(['country_id'=>$model->country])->asArray()->all(), 'ID', 'name'):[],
+            'options' => ['placeholder' => 'Select ...'],
+            'type' => \kartik\depdrop\DepDrop::TYPE_SELECT2,
+            'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+            'pluginOptions' => [
+                'depends' => ['users-country'],
+                'url' => \yii\helpers\Url::to(['/countries/states']),
+                'loadingText' => 'Loading States ...',
+            ]
+        ]);
+        ?>
         <?= $form->field($model, 'business_type')->dropDownList([ 'Broker' => 'Broker', 'Scrap Collector' => 'Scrap Collector', 'Muffler Shop' => 'Muffler Shop', 'Wrecking Yard' => 'Wrecking Yard']) ?>
 
         <?= $form->field($model, 'membership_level')->dropDownList([ 'Green' => 'Green', 'Gold' => 'Gold', 'Silver' => 'Silver']) ?>

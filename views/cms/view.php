@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'title:ntext',
                 [
                     'attribute'=>'photo',
-                    'value'=> 'uploads/cms/'.$model->photo,
+                    'value'=> Yii::$app->homeUrl.$model->photo,
                     'format' => ['image',['width'=>'100','height'=>'100']],
                 ],
                 'content:ntext',
