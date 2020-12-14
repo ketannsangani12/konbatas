@@ -16,6 +16,10 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'status')->dropDownList(($delivery==true)?['Delivered'=>'Delivered']:[ 'Accepted' => 'Accepted',  'Rejected' => 'Rejected' ], ['prompt' => '']) ?>
         <?php
+        if(Yii::$app->user->id==1){
+            echo $form->field($model, 'address')->textarea();
+
+        }
         if($delivery==true){
            echo $form->field($model, 'receipt')->fileInput();
         }

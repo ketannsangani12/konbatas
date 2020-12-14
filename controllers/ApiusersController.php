@@ -703,23 +703,44 @@ class ApiusersController extends ActiveController
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             $user_id = $this->user_id;
-            $carts = Carts::find()->select('*')->with([
-                'cartitems'=>function ($query) {
-                    $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
-                },
-                'buyer'=>function ($query) {
-                    $query->select(['id','full_name','company_name','address','contact_no']);
-                },
-                'pickupaddress'=>function ($query) {
-                    $query->select(['id','first_name','last_name','address','city','state','mobile_no','address_type']);
-                },
-                'cartitems.product'=>function ($query) {
-                    $query->select(['id','category_id','brand','part_number','secondary_part_number','description']);
-                },
-                'cartitems.product.images'=>function ($query) {
-                    $query->select(['id','product_id','image']);
-                },
-            ])->where(['seller_id'=>$user_id])->orderBy(['created_at'=>SORT_DESC])->asArray()->all();
+            $cart_id = (isset($_POST['cart_id']) && $_POST['cart_id']!='')?$_POST['cart_id']:'';
+            if($cart_id!=''){
+                $carts = Carts::find()->select('*')->with([
+                    'cartitems' => function ($query) {
+                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency']);
+                    },
+                    'buyer' => function ($query) {
+                        $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
+                    },
+                    'pickupaddress' => function ($query) {
+                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                    },
+                    'cartitems.product' => function ($query) {
+                        $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
+                    },
+                    'cartitems.product.images' => function ($query) {
+                        $query->select(['id', 'product_id', 'image']);
+                    },
+                ])->where(['id' => $cart_id])->asArray()->one();
+            }else {
+                $carts = Carts::find()->select('*')->with([
+                    'cartitems' => function ($query) {
+                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency']);
+                    },
+                    'buyer' => function ($query) {
+                        $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
+                    },
+                    'pickupaddress' => function ($query) {
+                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                    },
+                    'cartitems.product' => function ($query) {
+                        $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
+                    },
+                    'cartitems.product.images' => function ($query) {
+                        $query->select(['id', 'product_id', 'image']);
+                    },
+                ])->where(['seller_id' => $user_id])->orderBy(['created_at' => SORT_DESC])->asArray()->all();
+            }
             return array('status' => 1, 'data' => $carts);
 
 
