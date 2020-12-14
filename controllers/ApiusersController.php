@@ -156,6 +156,18 @@ class ApiusersController extends ActiveController
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             if (!empty($_POST)) {
+//               $send = Yii::$app->sms->compose()
+//                    ->setFrom('12345')  // if not set in config, or to override
+//                    ->setTo('+919925787515')
+//                   ->setMessage("Hey sd this is a test!")
+//                   ->send();
+//                if ( $send === true ) {
+//                    echo 'SMS was sent!';
+//                } else {
+//                    echo 'Error sending SMS!';
+//                }
+//                exit;
+                //var_dump($send);exit;
                 $model = new Users();
                 $model->scenario = 'register';
                 $model->attributes = Yii::$app->request->post();
@@ -200,6 +212,7 @@ class ApiusersController extends ActiveController
                         $statedetail = ($data['state']!='')?States::findOne($data['state']):'';
                         $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
                         $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
+                        $data['country_id']  = (!empty($countrydetail))?$countrydetail->id:'';
                         $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
