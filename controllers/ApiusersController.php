@@ -708,7 +708,7 @@ class ApiusersController extends ActiveController
                     $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
                 },
                 'buyer'=>function ($query) {
-                    $query->select(['id','full_name','company_name','address']);
+                    $query->select(['id','full_name','company_name','address',]);
                 },
                 'pickupaddress'=>function ($query) {
                     $query->select(['id','first_name','last_name','address','city','state','mobile_no','address_type']);
@@ -876,6 +876,10 @@ class ApiusersController extends ActiveController
                     if($cartmodel->type=='Pickup'){
                         $cartmodel->address_id = $cartmodel->address;
                         $cartmodel->address = null;
+                        $fees = $cartmodel->delivery_fee;
+                        $cartmodel->delivery_fee = null;
+                        $total = $cartmodel->total;
+                        $cartmodel->total = $total-$fees;
                     }
 
                     if ($cartmodel->save(false)) {
