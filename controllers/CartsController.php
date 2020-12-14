@@ -194,7 +194,7 @@ class CartsController extends Controller
                         $buyer_id = $model->buyer_id;
                     }else{
                         $full_name = 'Admin';
-                        $buyer_id = 1;
+                        $buyer_id = null;
                     }
                     $subject = "Cart Delivered - ".$model->order_no;
                     $textmessage = "Your cart has Delivered to ".$full_name;
