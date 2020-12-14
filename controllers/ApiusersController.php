@@ -708,7 +708,7 @@ class ApiusersController extends ActiveController
                     $query->select(['id','cart_id','product_id','quantity','price','total_price','currency']);
                 },
                 'buyer'=>function ($query) {
-                    $query->select(['id','full_name','company_name','address',]);
+                    $query->select(['id','full_name','company_name','address','contact_no']);
                 },
                 'pickupaddress'=>function ($query) {
                     $query->select(['id','first_name','last_name','address','city','state','mobile_no','address_type']);
