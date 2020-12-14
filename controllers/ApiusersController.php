@@ -119,6 +119,7 @@ class ApiusersController extends ActiveController
                         $this->user_id = $userdata->id;
                         $countrydetail = Countries::findOne($userdata->country);
                         $this->currency = $countrydetail->currency_code;
+
                        // echo "<pre>";print_r($countrydetail);exit;
                         return true;
 

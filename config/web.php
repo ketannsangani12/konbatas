@@ -74,7 +74,7 @@ $config = [
         ],
         'fcm1' => [
             'class' => 'understeam\fcm\Client',
-            'apiKey' => 'AAAAcp7B4g0:APA91bHCsou8Nrj2vdFM6EScXYQJDAKNOIPexmzFzZ0xRp2S7Mg14DP4BVWyAEfEllHPJ-CW0DCfdDdikm1pAItWqMuN0nnT8r2vqKH1yq48sRLlRVVtVHE3E65gsu-lDCHGtsCh-nC0', // Server API Key (you can get it here: https://firebase.google.com/docs/server/setup#prerequisites)
+            'apiKey' => 'AAAANp8oVGs:APA91bE3MTLArkl_m01m5d1xTnvGBwKKOVyjR8DPQ4ctUgkp790y9mPssqtME2YBcCOgYbGHbTVxBusJPYngHBSOQPOdEl0uLuMuK-CIHeJRe7Wn-VcPr0FnMb7t2FnHC9SAGlHY-sGo', // Server API Key (you can get it here: https://firebase.google.com/docs/server/setup#prerequisites)
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
