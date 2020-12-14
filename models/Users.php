@@ -105,6 +105,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'gender'=>'Gender',
             'offering_pickup'=>'Offering Pickup',
             'dob'=>'DOB',
+            'otp'=>'OTP',
             'business_type'=>'Type of Business',
             'average_converters'=>'Average Converters Collecter Per Month',
             'oldpassword'=>'Old Password',

@@ -214,6 +214,14 @@ class ApiusersController extends ActiveController
                         $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
                         $data['country_id']  = (!empty($countrydetail))?$countrydetail->id:'';
                         $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
+                        $contact_no = $data['contact_no'];
+                        if($contact_no!='' && $data['status']==2){
+                            $code = rand(100000, 999999);
+                            $userdetails = Users::findOne($data['id']);
+                            $userdetails->otp = $code;
+                            $userdetails->save(false);
+
+                        }
                         return array('status' => 1, 'message' => 'You have Logged  Successfully','data'=>$data,'token'=>$token);
                     }else{
                         return array('status' => 0, 'message' => 'Incorrect Email or password ');
@@ -339,6 +347,13 @@ class ApiusersController extends ActiveController
         } else {
             $user_id = $this->user_id;
             $data = Users::find()->where(['id' => $user_id])->asArray()->one();
+            $countrydetail = ($data['country']!='')?Countries::findOne($data['country']):'';
+            $statedetail = ($data['state']!='')?States::findOne($data['state']):'';
+            $data['currency'] = (!empty($countrydetail))?$countrydetail->currency_code:'';
+            $data['country']  = (!empty($countrydetail))?$countrydetail->name:'';
+            $data['country_id']  = (!empty($countrydetail))?$countrydetail->id:'';
+            $data['tax'] = (!empty($statedetail))?$statedetail->tax:'';
+
             $data['bankaccount'] = BankAccounts::find()->where(['user_id'=>$user_id])->asArray()->one();
 
             if (!empty($data)) {
