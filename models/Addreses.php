@@ -39,7 +39,7 @@ class Addreses extends \yii\db\ActiveRecord
             [['user_id'], 'integer'],
             [['address'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['first_name', 'last_name', 'city', 'state', 'mobile_no'], 'string', 'max' => 255],
+            [['first_name', 'last_name', 'city', 'state', 'mobile_no','suburb'], 'string', 'max' => 255],
             [['address_type'], 'string', 'max' => 100],
         ];
     }
@@ -56,6 +56,7 @@ class Addreses extends \yii\db\ActiveRecord
             'last_name' => 'Last Name',
             'address' => 'Address',
             'city' => 'City',
+            'suburb'=>'Suburb',
             'state' => 'State',
             'mobile_no' => 'Mobile No',
             'address_type' => 'Address Type',
