@@ -843,8 +843,24 @@ class ApiusersController extends ActiveController
                               $model->order_no = Yii::$app->common->generatereferencenumber($cart_id);
                               $model->save(false);
                               $transaction->commit();
-
-                              return array('status' => 1, 'message' => 'You have added Cart Successfully.','cart_no'=>$model->order_no);
+                              $data = Carts::find()->select('*')->with([
+                                  'cartitems' => function ($query) {
+                                      $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency','ceramic_content']);
+                                  },
+                                  'buyer' => function ($query) {
+                                      $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
+                                  },
+                                  'pickupaddress' => function ($query) {
+                                      $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state','suburb' ,'mobile_no', 'address_type']);
+                                  },
+                                  'cartitems.product' => function ($query) {
+                                      $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
+                                  },
+                                  'cartitems.product.images' => function ($query) {
+                                      $query->select(['id', 'product_id', 'image']);
+                                  },
+                              ])->where(['id' => $model->id])->asArray()->one();
+                              return array('status' => 1, 'message' => 'You have added Cart Successfully.','cart_no'=>$model->order_no,'data'=>$data);
 
                           }else{
                               $transaction->rollBack();
