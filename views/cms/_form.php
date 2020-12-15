@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'title')->textInput([]) ?>
 
         <?= $form->field($model, 'picture')->fileInput(['rows' => 6]) ?>
+        <p style="color: red;">Please upload image with 400x400.</p>
 
         <?= $form->field($model, 'content')->widget(\marqu3s\summernote\Summernote::className(), [
             'clientOptions' => [

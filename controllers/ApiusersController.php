@@ -706,7 +706,7 @@ class ApiusersController extends ActiveController
             if($cart_id!=''){
                 $carts = Carts::find()->select('*')->with([
                     'cartitems' => function ($query) {
-                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency']);
+                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency','ceramic_content']);
                     },
                     'buyer' => function ($query) {
                         $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
@@ -724,7 +724,7 @@ class ApiusersController extends ActiveController
             }else {
                 $carts = Carts::find()->select('*')->with([
                     'cartitems' => function ($query) {
-                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency']);
+                        $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency','ceramic_content']);
                     },
                     'buyer' => function ($query) {
                         $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
@@ -812,7 +812,7 @@ class ApiusersController extends ActiveController
                                   $cartitem = new CartItems();
                                   $cartitem->cart_id = $cart_id;
                                   $cartitem->product_id = $value->product_id;
-                                  $cartitem->ceramic_content = $value->ceramic_content;
+                                  $cartitem->ceramic_content = (isset($value->ceramic_content) && $value->ceramic_content!='')?$value->ceramic_content:null;
                                   $cartitem->price = $value->price;
                                   $cartitem->quantity = $value->quantity;
                                   $cartitem->total_price = $value->price*$value->quantity;

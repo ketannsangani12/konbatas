@@ -39,7 +39,7 @@ class CartItems extends \yii\db\ActiveRecord
             [['cart_id', 'product_id', 'quantity'], 'integer'],
             [['price', 'total_price'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
-            [['currency'], 'string', 'max' => 20],
+            [['currency','ceramic_content'], 'string', 'max' => 20],
             [['cart_id'], 'exist', 'skipOnError' => true, 'targetClass' => Carts::className(), 'targetAttribute' => ['cart_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Products::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -57,6 +57,7 @@ class CartItems extends \yii\db\ActiveRecord
             'quantity' => 'Quantity',
             'price' => 'Price',
             'total_price' => 'Total Price',
+            'ceramic_content'=>'Ceramic Content',
             'currency' => 'Currency',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
