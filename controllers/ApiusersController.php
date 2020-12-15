@@ -538,7 +538,23 @@ class ApiusersController extends ActiveController
             $user_id = $this->user_id;
             $data['news'] = Cms::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
             $data['categories'] = Categories::find()->orderBy(['id'=>SORT_ASC])->asArray()->all();
-            $data['carts'] = Carts::find()->where(['seller_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $data['carts'] = Carts::find()->with([
+                'cartitems' => function ($query) {
+                    $query->select(['id', 'cart_id', 'product_id', 'quantity', 'price', 'total_price', 'currency','ceramic_content']);
+                },
+                'buyer' => function ($query) {
+                    $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
+                },
+                'pickupaddress' => function ($query) {
+                    $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                },
+                'cartitems.product' => function ($query) {
+                    $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
+                },
+                'cartitems.product.images' => function ($query) {
+                    $query->select(['id', 'product_id', 'image']);
+                },
+            ])->where(['seller_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
             return array('status' => 1, 'data' => $data);
 
         }
