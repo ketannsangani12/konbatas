@@ -546,7 +546,7 @@ class ApiusersController extends ActiveController
                     $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
                 },
                 'pickupaddress' => function ($query) {
-                    $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                    $query->select(['id', 'first_name', 'last_name', 'address', 'city','suburb', 'state', 'mobile_no', 'address_type']);
                 },
                 'cartitems.product' => function ($query) {
                     $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
@@ -728,7 +728,7 @@ class ApiusersController extends ActiveController
                         $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
                     },
                     'pickupaddress' => function ($query) {
-                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state','suburb' ,'mobile_no', 'address_type']);
                     },
                     'cartitems.product' => function ($query) {
                         $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
@@ -746,7 +746,7 @@ class ApiusersController extends ActiveController
                         $query->select(['id', 'full_name', 'company_name', 'address', 'contact_no']);
                     },
                     'pickupaddress' => function ($query) {
-                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'mobile_no', 'address_type']);
+                        $query->select(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'suburb' ,'mobile_no', 'address_type']);
                     },
                     'cartitems.product' => function ($query) {
                         $query->select(['id', 'category_id', 'brand', 'part_number', 'secondary_part_number', 'description']);
