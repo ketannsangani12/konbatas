@@ -49,7 +49,6 @@ class Common extends Component
                 break;
             case "Processing";
                 return "<span class='btn btn-warning btn-xs'>Processing</span>";
-
                 break;
             case "Accepted";
                 return "<span class='btn bg-green btn-xs'>Accepted</span>";
@@ -96,11 +95,11 @@ class Common extends Component
             case "Paid";
                 return "<span class='btn bg-green btn-xs'>Paid</span>";
                 break;
-            case "Payment Requested";
-                return "<span class='btn bg-blue btn-xs'>Payment Requested</span>";
+            case "Delivery In Progress";
+                return "<span class='btn bg-blue btn-xs'>Delivery In Progress</span>";
                 break;
-            case "Out For Delivey";
-                return "<span class='btn bg-blue btn-xs'>Out For Delivey</span>";
+            case "Ready for Pickup";
+                return "<span class='btn bg-blue btn-xs'>Ready for Pickup</span>";
                 break;
             case "Rented";
                 return "<span class='btn bg-green btn-xs'>Rented</span>";

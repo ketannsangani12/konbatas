@@ -89,6 +89,7 @@ class Carts extends \yii\db\ActiveRecord
             'address_id'=>'Address',
             'subtotal' => 'Subtotal',
             'delivery_fee' => 'Delivery Fee',
+            'ceramic_content'=>'Ceramic Content',
             'tax' => 'Tax',
             'total' => 'Total',
             'type' => 'Type',

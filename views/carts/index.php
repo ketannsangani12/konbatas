@@ -59,13 +59,21 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'subtotal',
             // 'delivery_fee',
             'tax',
-            'total',
+            'total',//                            return ($model->document_content!='')?Html::a('Print', \yii\helpers\Url::to([Yii::$app->controller->id.'/printagreement', 'id' => $model->id])):'Not Uploaded';
+
             // 'type',
             [
                 'attribute'=>'status',
                 'format'=>'raw',
                 'value'=> function($model){
-                    return Yii::$app->common->getStatus($model->status);
+                    if($model->type=='Delivery' && $model->address!=''){
+                        $status = 'Delivery In Progress';
+                    }else if($model->type=='Pickup' && $model->address_id!=''){
+                        $status = 'Ready for Pickup';
+                    }else{
+                        $status = $model->status;
+                    }
+                    return Yii::$app->common->getStatus($status);
                 },
                 'filter'=>array("Processing"=>"Processing","Accepted"=>"Accepted","Delivered"=>"Delivered","Cancelled"=>"Cancelled"),
                 'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],

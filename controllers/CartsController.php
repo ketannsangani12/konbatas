@@ -122,7 +122,7 @@ class CartsController extends Controller
                         $buyer_id = 1;
                     }
                     $subject = "Cart ".$model->status." - ".$model->order_no;
-                    $textmessage = "Your cart has ".$model->status." by ".$full_name;
+                    $textmessage = "Your Cart #".$model->order_no." has been ".$model->status." by ".$full_name."! Please check your Submitted Carts screen for the next steps.";
                     $notificationmodel = new Notifications();
                     $notificationmodel->sender_id = $buyer_id;
                     $notificationmodel->receiver_id = $model->seller_id;
@@ -197,7 +197,7 @@ class CartsController extends Controller
                         $buyer_id = null;
                     }
                     $subject = "Cart Delivered - ".$model->order_no;
-                    $textmessage = "Your cart has Delivered to ".$full_name;
+                    $textmessage = $full_name." has confirmed that he has received the items in Cart #".$model->order_no." and made payment. Please check your Submitted Carts screen for the receipt.";
                     $notificationmodel = new Notifications();
                     $notificationmodel->sender_id = $buyer_id;
                     $notificationmodel->receiver_id = $model->seller_id;

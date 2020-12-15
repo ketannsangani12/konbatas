@@ -185,7 +185,7 @@ class ApiusersController extends ActiveController
 
                     $save = $model->save(false);
                     if($save) {
-                        return array('status' => 1, 'message' => 'You have Registered  Successfully.We have sent you OTP on your mobile number,Please verify it.','user_id'=>$model->id);
+                        return array('status' => 1, 'message' => 'You have Registered  Successfully.Please check your mobile number for an OTP and input it in the next screen to verify. Thank you.','user_id'=>$model->id);
                     }else{
                         return array('status' => 0, 'message' => 'You have Not Registered  Successfully');
                     }
@@ -537,7 +537,7 @@ class ApiusersController extends ActiveController
         } else {
             $user_id = $this->user_id;
             $data['news'] = Cms::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
-            $data['categories'] = Categories::find()->orderBy(['id'=>SORT_DESC])->asArray()->all();
+            $data['categories'] = Categories::find()->orderBy(['id'=>SORT_ASC])->asArray()->all();
             $data['carts'] = Carts::find()->where(['seller_id'=>$user_id])->orderBy(['id'=>SORT_DESC])->asArray()->all();
             return array('status' => 1, 'data' => $data);
 
@@ -691,11 +691,8 @@ class ApiusersController extends ActiveController
         } else {
             $user_id = $this->user_id;
             $data = BankAccounts::find()->where(['user_id' => $user_id])->asArray()->one();
-            if (!empty($data)) {
-                return array('status' => 1, 'data' => $data);
-            }else{
-                return array('status' => 0, 'message' => 'User Id Not Found');
-            }
+            return array('status' => 1, 'data' => $data);
+
 
         }
     }
@@ -815,6 +812,7 @@ class ApiusersController extends ActiveController
                                   $cartitem = new CartItems();
                                   $cartitem->cart_id = $cart_id;
                                   $cartitem->product_id = $value->product_id;
+                                  $cartitem->ceramic_content = $value->ceramic_content;
                                   $cartitem->price = $value->price;
                                   $cartitem->quantity = $value->quantity;
                                   $cartitem->total_price = $value->price*$value->quantity;

@@ -58,7 +58,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'delivery_fee',
                 'tax',
                 'total',
-                'type',
+                'type',//                            return ($model->document_content!='')?Html::a('Print', \yii\helpers\Url::to([Yii::$app->controller->id.'/printagreement', 'id' => $model->id])):'Not Uploaded';
+                [
+                    'label'=>'Receipt',
+
+                    'value'=>function($model){
+                        return ($model->document!='')?Html::a('Download', Yii::$app->homeUrl.$model->document):'Not Uploaded';
+
+                    },
+                    'format' => 'raw',
+
+                ],
                 [
                     'label'=>'Address',
 
@@ -78,7 +88,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'status',
                     'label' => 'Status',
                     'value' => function ($model) {
-                        return Yii::$app->common->getStatus($model->status);
+                        if($model->type=='Delivery' && $model->address!=''){
+                            $status = 'Delivery In Progress';
+                        }else if($model->type=='Pickup' && $model->address_id!=''){
+                            $status = 'Ready for Pickup';
+                        }else{
+                            $status = $model->status;
+                        }
+                        return Yii::$app->common->getStatus($status);
                     },
                     'format' => 'raw',
                 ],
@@ -104,6 +121,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'product.part_number',
 
                         //'filter'=>false
+                    ],
+                    [
+                        'label' => 'Brand',
+
+                        'value' => 'product.brand',
+
+                        //'filter'=>false
+                    ],
+                    [
+                        'label' => 'Description',
+
+                        'value' => 'product.description',
+
+                        //'filter'=>false
+                    ],
+                    [
+                        'label'=>'Picture',
+                        'value'=> function($model){
+                            $image = \app\models\Images::find()->where(['product_id'=>$model->product_id])->one();
+                            if(!empty($image)){
+                                return Yii::$app->homeUrl.$image->image;
+                            }
+                        },
+                        'format' => ['image',['width'=>'100','height'=>'100']],
                     ],
                     'quantity',
                     'price',
