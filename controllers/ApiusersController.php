@@ -178,6 +178,7 @@ class ApiusersController extends ActiveController
                 if($model->validate()){
                     $model->role = 'Seller';
                     $model->membership_level = 'Green';
+                    $model->status = 1;
                     $model->password = md5(Yii::$app->request->post('password'));
                     $model->verify_token = Yii::$app->getSecurity()->generateRandomString();
                     $model->created_at = date('Y-m-d h:i:s');
