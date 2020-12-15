@@ -88,9 +88,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'status',
                     'label' => 'Status',
                     'value' => function ($model) {
-                        if($model->type=='Delivery' && $model->address!=''){
+                        if($model->status=='Accepted' && $model->type=='Delivery' && $model->address!=''){
                             $status = 'Delivery In Progress';
-                        }else if($model->type=='Pickup' && $model->address_id!=''){
+                        }else if($model->status=='Accepted' && $model->type=='Pickup' && $model->address_id!=''){
                             $status = 'Ready for Pickup';
                         }else{
                             $status = $model->status;
