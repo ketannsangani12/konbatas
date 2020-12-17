@@ -593,6 +593,17 @@ class ApiusersController extends ActiveController
         }
     }
 
+    public function actionCategories(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            $data = Products::find()->select(['brand'])->where(['!=','brand',''])->groupBy(['brand'])
+                ->asArray()->all();
+            return array('status' => 1, 'data' => $data);
+        }
+    }
+
     public function actionProducts(){
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method != 'POST') {
@@ -601,6 +612,7 @@ class ApiusersController extends ActiveController
             if (!empty($_POST)) {
                     $search = (isset($_POST['search']) && $_POST['search']!='')?$_POST['search']:'';
                     $category = (isset($_POST['category_id']) && $_POST['category_id']!='')?$_POST['category_id']:'';
+                    $brand = (isset($_POST['brand']) && $_POST['brand']!='')?$_POST['brand']:'';
 
                     $query = Products::find()->with([
                         'pictures'=>function ($query) {
@@ -613,6 +625,9 @@ class ApiusersController extends ActiveController
                     if($category!='') {
                         $query->where(['category_id' => $_POST['category_id']]);
                     }
+                if($brand!='') {
+                    $query->where(['brand' => $brand]);
+                }
                    if($search!=''){
                        $query->where(['like', 'part_number', $search]);
                        $query->orWhere(['like', 'brand', $search]);
