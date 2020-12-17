@@ -629,7 +629,13 @@ class ApiusersController extends ActiveController
                         $query->where(['category_id' => $_POST['category_id']]);
                     }
                 if($brand!='') {
-                    $query->where(['brand' => $brand]);
+                    if($category!=''){
+                        $query->andWhere(['brand' => $brand]);
+
+                    }else{
+                        $query->where(['brand' => $brand]);
+
+                    }
                 }
                    if($search!=''){
                        $query->where(['like', 'part_number', $search]);
