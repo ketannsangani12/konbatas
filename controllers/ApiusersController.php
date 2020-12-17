@@ -598,8 +598,11 @@ class ApiusersController extends ActiveController
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
-            $data = Products::find()->select(['brand'])->where(['!=','brand',''])->groupBy(['brand'])
+            $data['categories'] = Categories::find()->orderBy(['id'=>SORT_ASC])->asArray()->all();
+
+            $data['brands'] = Products::find()->select(['brand'])->where(['!=','brand',''])->groupBy(['brand'])
                 ->asArray()->all();
+
             return array('status' => 1, 'data' => $data);
         }
     }
