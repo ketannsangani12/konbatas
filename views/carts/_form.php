@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'status')->dropDownList(($delivery==true)?($model->type=='Pickup')?['Received'=>'Received']:['Delivered'=>'Delivered']:[ 'Accepted' => 'Accepted',  'Rejected' => 'Rejected' ], ['prompt' => '']) ?>
         <?php
-        if(Yii::$app->user->id==1 && $model->type=='Delivery'){
+        if(Yii::$app->user->id==1 && $model->type==''){
             echo $form->field($model, 'address')->textarea();
 
         }
