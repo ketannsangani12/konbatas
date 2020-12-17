@@ -56,6 +56,9 @@ class Common extends Component
             case "Delivered";
                 return "<span class='btn bg-green btn-xs'>Delivered</span>";
                 break;
+            case "Received";
+                return "<span class='btn bg-green btn-xs'>Received</span>";
+                break;
             case "Completed";
                 return "<span class='btn bg-green btn-xs'>Completed</span>";
                 break;

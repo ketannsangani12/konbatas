@@ -14,11 +14,19 @@ use yii\widgets\ActiveForm;
     <div class="box-body table-responsive">
 
 
-        <?= $form->field($model, 'status')->dropDownList(($delivery==true)?['Delivered'=>'Delivered']:[ 'Accepted' => 'Accepted',  'Rejected' => 'Rejected' ], ['prompt' => '']) ?>
+        <?= $form->field($model, 'status')->dropDownList(($delivery==true)?($model->type=='Pickup')?['Received'=>'Received']:['Delivered'=>'Delivered']:[ 'Accepted' => 'Accepted',  'Rejected' => 'Rejected' ], ['prompt' => '']) ?>
         <?php
-        if(Yii::$app->user->id==1){
+        if(Yii::$app->user->id==1 && $model->type=='Delivery'){
             echo $form->field($model, 'address')->textarea();
 
+        }
+        if($model->type=='Pickup'){
+         $address = \app\models\Addreses::findOne($model->address_id);
+            if(!empty($address)){
+                $model->address = $address->address;
+                echo $form->field($model, 'address')->textarea(['disabled'=>'disabled']);
+
+            }
         }
         if($delivery==true){
            echo $form->field($model, 'receipt')->fileInput();
