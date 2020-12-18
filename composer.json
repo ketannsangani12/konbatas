@@ -32,7 +32,8 @@
         "phpoffice/phpexcel": "^1.8",
         "understeam/yii2-fcm": "~0.1",
         "marqu3s/yii2-summernote": "dev-master",
-        "wadeshuler/yii2-sms-twilio": "^1.0"
+        "wadeshuler/yii2-sms-twilio": "^1.0",
+        "filipajdacic/yii2-twilio": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -125,28 +125,16 @@ $config = [
 
             ],
         ],
-        'sms' => [
-            'class' => 'wadeshuler\sms\twilio\Sms',
+        'Yii2Twilio' => [
+            'class' => 'filipajdacic\yiitwilio\YiiTwilio',
 
-            // Advanced app use '@common/sms', basic use '@app/sms'
-            //'viewPath' => '@common/sms',     // Optional: defaults to '@app/sms'
 
-            // send all sms to a file by default. You have to set
-            // 'useFileTransport' to false and configure the messageConfig['from'],
-            // 'sid', and 'token' to send real messages
-            'useFileTransport' => true,
-
-            'messageConfig' => [
-                'from' => '+1 205 479 4240',  // Your Twilio number (full or shortcode)
-            ],
 
             // Find your Account Sid and Auth Token at https://twilio.com/console
-            'sid' => 'AC088c0783cdb9b510a4875b9102974386',
-            'token' => 'bc42ab96ca95258e975a7fe5018d6a85',
+            'account_sid' => 'AC088c0783cdb9b510a4875b9102974386',
+            'auth_key' => 'bc42ab96ca95258e975a7fe5018d6a85',
 
-            // Tell Twilio where to POST information about your message.
-            // @see https://www.twilio.com/docs/sms/send-messages#monitor-the-status-of-your-message
-            'statusCallback' => 'http://konbatas.test/site/callback',      // optional
+
         ],
 
     ],

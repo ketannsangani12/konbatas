@@ -185,6 +185,18 @@ class ApiusersController extends ActiveController
 
                     $save = $model->save(false);
                     if($save) {
+                        $code = rand(100000, 999999);
+                        $text = "RM0 Konbatas - Your Code is ".$code.
+                            $twilioService = Yii::$app->Yii2Twilio->initTwilio();
+
+                        $message = $twilioService->account->messages->create(
+                            $model->contact_no, // To a number that you want to send sms
+                            array(
+                                "from" => "+12314124743",   // From a number that you are sending
+                                "body" => $text,
+                            ));
+                        $model->otp = $code;
+                        $model->save(false);
                         return array('status' => 1, 'message' => 'You have Registered  Successfully.Please check your mobile number for an OTP and input it in the next screen to verify. Thank you.','user_id'=>$model->id);
                     }else{
                         return array('status' => 0, 'message' => 'You have Not Registered  Successfully');
@@ -222,6 +234,15 @@ class ApiusersController extends ActiveController
                         if($contact_no!='' && $data['status']==2){
                             $code = rand(100000, 999999);
                             $userdetails = Users::findOne($data['id']);
+                            $text = "RM0 Konbatas - Your Code is ".$code.
+                            $twilioService = Yii::$app->Yii2Twilio->initTwilio();
+
+                            $message = $twilioService->account->messages->create(
+                                $contact_no, // To a number that you want to send sms
+                                array(
+                                    "from" => "+12314124743",   // From a number that you are sending
+                                    "body" => $text,
+                                ));
                             $userdetails->otp = $code;
                             $userdetails->save(false);
                             return array('status' => 1, 'message' => 'Your account is not verified.Please verify using OTP.', 'data' => $data,'token' => $token);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "198536af9d13425d1f2417cb67fd7658",
+    "content-hash": "0202819ae2a97e490b645d4e34fcd72c",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -247,7 +247,7 @@
             "version": "5.14.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "c38da7f63e45b7ba12fb33539a4e54677f8e63aa"
             },
             "dist": {
@@ -679,6 +679,51 @@
                 "html"
             ],
             "time": "2020-06-29T00:56:53+00:00"
+        },
+        {
+            "name": "filipajdacic/yii2-twilio",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filipajdacic/yii2-twilio.git",
+                "reference": "bbb3c1d5d22e415e51da994b4603e8ce71e54842"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filipajdacic/yii2-twilio/zipball/bbb3c1d5d22e415e51da994b4603e8ce71e54842",
+                "reference": "bbb3c1d5d22e415e51da994b4603e8ce71e54842",
+                "shasum": ""
+            },
+            "require": {
+                "twilio/sdk": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "filipajdacic\\yiitwilio\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Ajdacic",
+                    "email": "ajdasoft@gmail.com"
+                }
+            ],
+            "description": "This component is YII2 wrapper for Twilio PHP module",
+            "keywords": [
+                "extension",
+                "sms",
+                "twillio",
+                "video",
+                "voice",
+                "yii2"
+            ],
+            "time": "2016-12-14T09:06:42+00:00"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -7523,7 +7568,8 @@
         "bburim/daterangepicker": 20,
         "kartik-v/yii2-export": 20,
         "kartik-v/yii2-widget-depdrop": 20,
-        "marqu3s/yii2-summernote": 20
+        "marqu3s/yii2-summernote": 20,
+        "filipajdacic/yii2-twilio": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
