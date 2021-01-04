@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+ini_set('memory_limit', '1024M');
 use app\models\MetalsPrices;
 use GuzzleHttp\Psr7\UploadedFile;
 use Yii;
