@@ -14,6 +14,7 @@ use app\models\EmailTemplates;
 use app\models\Faqs;
 use app\models\MetalsPrices;
 use app\models\Notifications;
+use app\models\Payments;
 use app\models\Products;
 use app\models\States;
 use Da\QrCode\QrCode;
@@ -1057,5 +1058,46 @@ class ApiusersController extends ActiveController
        }
 
    }
+
+    public function actionPayment(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if (!empty($_POST) ) {
+                $model = new Payments();
+                $model->attributes = Yii::$app->request->post();
+                $model->scenario = 'payment';
+                if ($model->validate()) {
+                    $model->user_id = $this->user_id;
+                    $model->response = json_decode($model->response);
+                    $model->created_at = date('Y-m-d H:i:s');
+                    if($model->save(false)){
+                        $user = Users::findOne($this->user_id);
+                        $user->membership_level = 'Green';
+                        if ($model->type == 'monthly'){
+                            $user->membereship_expired_date = date('Y-m-d', strtotime('+1 months'));
+                        }else{
+                            $user->membereship_expired_date = date('Y-m-d', strtotime('+13 months'));
+                        }
+
+                        $user->save(false);
+                        return array('status' => 1, 'message' => 'You have Payment Successfully.');
+
+                    }else{
+                        return array('status' => 0, 'message' => 'Something Went wrong.Please try after sometimes.');
+
+                    }
+
+                }else{
+                    return array('status' => 0, 'message' => $model->getErrors());
+
+                }
+
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+            }
+        }
+    }
 
 }
