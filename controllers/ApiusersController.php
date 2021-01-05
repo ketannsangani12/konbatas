@@ -661,6 +661,8 @@ class ApiusersController extends ActiveController
                 }
                    if($search!=''){
                        $query->where(['like', 'part_number', $search]);
+                       $query->orWhere(['like', 'secondary_part_number', $search]);
+
                        $query->orWhere(['like', 'brand', $search]);
 
 
