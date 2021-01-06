@@ -19,6 +19,7 @@ use app\models\Products;
 use app\models\States;
 use Da\QrCode\QrCode;
 use sizeg\jwt\JwtHttpBearerAuth;
+use Stripe\Stripe;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
 use yii\db\Transaction;
@@ -1099,6 +1100,71 @@ class ApiusersController extends ActiveController
             }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
             }
+        }
+    }
+
+    public function actionStripepayment(){
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'POST') {
+            return array('status' => 0, 'message' => 'Bad request.');
+        } else {
+            if(!empty($_POST)) {
+                $amount = $_POST['amount'];
+                $type = $_POST['type'];
+                \Stripe\Stripe::setApiKey('sk_test_51HIRzzE6WtlyNyFIpF7FDJRojYWfZdXosxkUXOKRDJk5xNcnPYPt69iJsNFF9sf8wZAaxXRRMikwDnAeypRknuMG00KAhpf3j4');
+
+                $token = $_POST['token'];
+                $charge = \Stripe\Charge::create([
+                    'amount' => $amount,
+                    'currency' => 'usd',
+                    'description' => 'Konbatas - Membership',
+                    'source' => $token,
+                ]);
+                if(!empty($charge) && isset($charge->status) && $charge->status=='succeeded'){
+                    $model = new Payments();
+                    $model->user_id = $this->user_id;
+                    $model->amount = $amount/100;
+                    $model->response = json_encode($charge);
+                    $model->status = 'Completed';
+                    $model->type = $type;
+                    $model->created_at = date('Y-m-d H:i:s');
+                    if($model->save(false)){
+                        $user = Users::findOne($this->user_id);
+                        $user->membership_level = 'Green';
+                        if ($model->type == 'monthly'){
+                            $user->membereship_expired_date = date('Y-m-d', strtotime('+1 months'));
+                        }else{
+                            $user->membereship_expired_date = date('Y-m-d', strtotime('+13 months'));
+                        }
+
+                        $user->save(false);
+                        return array('status' => 1, 'message' => 'You have Completed Payment Successfully.');
+
+                    }
+                }else if(!empty($charge) && isset($charge->status) && ($charge->status=='pending' || $charge->status=='failed')){
+                    $model = new Payments();
+                    $model->user_id = $this->user_id;
+                    $model->amount = $amount/100;
+                    $model->response = json_encode($charge);
+                    $model->status = ($charge->status=='failed')?"Failed":"Pending";
+                    $model->type = $type;
+                    $model->created_at = date('Y-m-d H:i:s');
+
+                    if($model->save(false)){
+                        if($model->status=='Failed'){
+                            return array('status' => 0, 'message' => 'Your payment is failed.');
+
+                        }else{
+                            return array('status' => 0, 'message' => 'Your payment is pending.');
+
+                        }
+                    }
+                }
+            }else{
+                return array('status' => 0, 'message' => 'Please enter mandatory fields.');
+
+            }
+
         }
     }
 

@@ -33,7 +33,8 @@
         "understeam/yii2-fcm": "~0.1",
         "marqu3s/yii2-summernote": "dev-master",
         "wadeshuler/yii2-sms-twilio": "^1.0",
-        "filipajdacic/yii2-twilio": "dev-master"
+        "filipajdacic/yii2-twilio": "dev-master",
+        "stripe/stripe-php": "^7.67"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
