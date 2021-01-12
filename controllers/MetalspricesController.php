@@ -72,9 +72,10 @@ class MetalspricesController extends Controller
                         $newmodel->rhodium_price = $model->rhodium_price;
                         $newmodel->created_at = date('Y-m-d H:i:s');
                         if($newmodel->save(false)) {
-                            $products = Products::find()->all();
-                            if(!empty($products)){
-                                foreach ($products as $product){
+                            //$products = Products::find()->all();
+                            //if(!empty($products)){
+                                $myUpdate = "";
+                                foreach (Products::find()->each(100) as $product){
                                     $platinum_price = (float)$newmodel->platinum_price;
                                     $palladium_price = (float)$newmodel->palladium_price;
                                     $rhodium_price = (float)$newmodel->rhodium_price;
@@ -89,16 +90,22 @@ class MetalspricesController extends Controller
                                     $platinum = (($convertervalueusd-$usdollar)*0.8)+14.50;
                                     $gold = (($convertervalueusd-$usdollar)*0.75)+14.50;
                                     $green = (($convertervalueusd-$usdollar)*0.7)+14.50;
+
                                     $product->platinum_price = $platinum;
                                     $product->gold_price = $gold;
                                     $product->green_price = $green;
                                     $product->updated_at = date('Y-m-d H:i:s');
                                     $product->save(false);
 
-
-
                                 }
-                            }
+                                //\Yii::$app->db->createCommand($myUpdate)->execute();
+
+
+
+
+
+
+
                             return $this->redirect(['create']);
                         }
 
