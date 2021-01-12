@@ -75,7 +75,7 @@ class MetalspricesController extends Controller
                             //$products = Products::find()->all();
                             //if(!empty($products)){
                                 $myUpdate = "";
-                                foreach (Products::find()->each(100) as $product){
+                                foreach (Products::find()->each(500) as $product){
                                     $platinum_price = (float)$newmodel->platinum_price;
                                     $palladium_price = (float)$newmodel->palladium_price;
                                     $rhodium_price = (float)$newmodel->rhodium_price;
