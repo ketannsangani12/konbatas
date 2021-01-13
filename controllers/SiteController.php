@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\MetalsPrices;
+use app\models\Products;
 use app\models\Users;
 use Yii;
 use yii\filters\AccessControl;
@@ -159,7 +161,45 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionUpdateprices()
+    {
+        $fromdate = date('Y-m-d 00:00:00');
+        $todate = date('Y-m-d H:i:s');
 
+        $model = MetalsPrices::find()->where(['>=','DATE(created_at)', $fromdate])->andWhere(['<=','DATE(created_at)', $todate])->andWhere(['is', 'updated_at', new \yii\db\Expression('null')])->orderBy([
+            'id' => SORT_DESC])->one();
+
+                    foreach (Products::find()->each(500) as $product){
+                        $id = $product->id;
+                        $platinum_price = (float)$model->platinum_price;
+                        $palladium_price = (float)$model->palladium_price;
+                        $rhodium_price = (float)$model->rhodium_price;
+                        $usdollar = 14.50;
+                        $convertweight = 31.1028;
+                        $platinum_ppm = $product->platinum_ppt;
+                        $palladium_ppm = $product->palladium_ppt;
+                        $rhodium_ppm = $product->rhodium_ppt;
+                        $weight = $product->converter_ceramic_weight;
+                        $convertervalueusd = $weight*(($platinum_ppm*($platinum_price/$convertweight))+($palladium_ppm*($palladium_price/$convertweight))+($rhodium_ppm*($rhodium_price/$convertweight)))/1000;
+                        $product->converter_value = $convertervalueusd;
+                        $platinum = (($convertervalueusd-$usdollar)*0.8)+14.50;
+                        $gold = (($convertervalueusd-$usdollar)*0.75)+14.50;
+                        $green = (($convertervalueusd-$usdollar)*0.7)+14.50;
+
+                        $product->platinum_price = $platinum;
+                        $product->gold_price = $gold;
+                        $product->green_price = $green;
+                        $product->updated_at = date('Y-m-d H:i:s');
+                        $product->save(false);
+
+
+                    }
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $model->save(false);
+
+
+
+    }
     /**
      * Logout action.
      *
