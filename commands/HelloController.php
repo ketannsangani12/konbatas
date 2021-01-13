@@ -6,7 +6,7 @@
  */
 
 namespace app\commands;
-
+ini_set('memory_limit', '1024M');
 use app\models\Cronjobs;
 use app\models\MetalsPrices;
 use app\models\Products;

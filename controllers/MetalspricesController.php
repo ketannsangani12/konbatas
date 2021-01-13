@@ -76,31 +76,7 @@ class MetalspricesController extends Controller
                             //$products = Products::find()->all();
                             //if(!empty($products)){
                                 $myUpdate = "";
-                                foreach (Products::find()->each(500) as $product){
-                                    $id = $product->id;
-                                    $platinum_price = (float)$newmodel->platinum_price;
-                                    $palladium_price = (float)$newmodel->palladium_price;
-                                    $rhodium_price = (float)$newmodel->rhodium_price;
-                                    $usdollar = 14.50;
-                                    $convertweight = 31.1028;
-                                    $platinum_ppm = $product->platinum_ppt;
-                                    $palladium_ppm = $product->palladium_ppt;
-                                    $rhodium_ppm = $product->rhodium_ppt;
-                                    $weight = $product->converter_ceramic_weight;
-                                    $convertervalueusd = $weight*(($platinum_ppm*($platinum_price/$convertweight))+($palladium_ppm*($palladium_price/$convertweight))+($rhodium_ppm*($rhodium_price/$convertweight)))/1000;
-                                    $product->converter_value = $convertervalueusd;
-                                    $platinum = (($convertervalueusd-$usdollar)*0.8)+14.50;
-                                    $gold = (($convertervalueusd-$usdollar)*0.75)+14.50;
-                                    $green = (($convertervalueusd-$usdollar)*0.7)+14.50;
 
-                                    $product->platinum_price = $platinum;
-                                    $product->gold_price = $gold;
-                                    $product->green_price = $green;
-                                    $product->updated_at = date('Y-m-d H:i:s');
-                                    $product->save(false);
-
-
-                                }
                                 //\Yii::$app->db->createCommand($myUpdate)->execute();
 
 
