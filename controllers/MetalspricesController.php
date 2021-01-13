@@ -77,6 +77,7 @@ class MetalspricesController extends Controller
                             //if(!empty($products)){
                                 $myUpdate = "";
                                 foreach (Products::find()->each(500) as $product){
+                                    $id = $product->id;
                                     $platinum_price = (float)$newmodel->platinum_price;
                                     $palladium_price = (float)$newmodel->palladium_price;
                                     $rhodium_price = (float)$newmodel->rhodium_price;
@@ -92,11 +93,17 @@ class MetalspricesController extends Controller
                                     $gold = (($convertervalueusd-$usdollar)*0.75)+14.50;
                                     $green = (($convertervalueusd-$usdollar)*0.7)+14.50;
 
-                                    $product->platinum_price = $platinum;
-                                    $product->gold_price = $gold;
-                                    $product->green_price = $green;
-                                    $product->updated_at = date('Y-m-d H:i:s');
-                                    $product->save(false);
+//                                    $product->platinum_price = $platinum;
+//                                    $product->gold_price = $gold;
+//                                    $product->green_price = $green;
+//                                    $product->updated_at = date('Y-m-d H:i:s');
+//                                    $product->save(false);
+                                    \Yii::$app->db->createCommand("CALL myProcedure(:paramName1, :paramName2,:paramName3,:paramName4)")
+                                        ->bindValue(':paramName1' , $id )
+                                        ->bindValue(':paramName2', $gold)
+                                        ->bindValue(':paramName3', $platinum)
+                                        ->bindValue(':paramName4', $green)
+                                        ->execute();
 
                                 }
                                 //\Yii::$app->db->createCommand($myUpdate)->execute();
