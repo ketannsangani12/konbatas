@@ -86,6 +86,7 @@ class SellersController extends Controller
                 $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 $password = substr(str_shuffle($chars),0,6);
                 $model->password = md5($password);
+                $model->membereship_expired_date = date('Y-m-d',strtotime($model->membereship_expired_date));
                 $model->created_at = date('Y-m-d h:i:s');
                 if($model->save()){
                     return $this->redirect(['index']);
@@ -122,8 +123,10 @@ class SellersController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
             // $model->picture = \yii\web\UploadedFile::getInstance($model, 'picture');
             if($model->validate()) {
+                $model->membereship_expired_date = date('Y-m-d',strtotime($model->membereship_expired_date));
+
                 $model->updated_at = date('Y-m-d h:i:s');
-                if($model->save()) {
+                if($model->save(false)) {
                     return $this->redirect(['index']);
                 }
             }else{

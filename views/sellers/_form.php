@@ -50,7 +50,17 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'business_type')->dropDownList([ 'Broker' => 'Broker', 'Scrap Collector' => 'Scrap Collector', 'Muffler Shop' => 'Muffler Shop', 'Wrecking Yard' => 'Wrecking Yard']) ?>
 
         <?= $form->field($model, 'membership_level')->dropDownList([ 'Green' => 'Green', 'Gold' => 'Gold', 'Silver' => 'Silver']) ?>
-
+        <?= $form->field($model, 'membereship_expired_date')->widget(
+            \kartik\date\DatePicker::className(), [
+            // inline too, not bad
+            // modify template for custom rendering
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'dd-mm-yyyy',
+                'todayHighlight' => true,
+                'startDate' => date("d-m-Y")
+            ]
+        ]);?>
         <?= $form->field($model, 'average_converters')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'contact_no')->textInput(['maxlength' => true]) ?>
 

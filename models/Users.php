@@ -47,7 +47,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['full_name','email','password','business_type','average_converters','contact_no','country','state'], 'required','on' => 'register'],
             [['email','password'], 'required','on' => 'loginapp'],
             [['email'], 'required','on' => 'forgotpassword'],
-            [['full_name','email','business_type','average_converters','contact_no','country','membership_level'], 'required','on' => 'updateseller'],
+            [['full_name','email','business_type','average_converters','contact_no','country','membership_level','membereship_expired_date'], 'required','on' => 'updateseller'],
             [['full_name','email','password','contact_no'], 'required','on' => 'register'],
             [['gender','dob','race','nationality','education_level','occupation','annual_income','contact_no','emergency_contact'], 'required','on' => 'updateprofileuser'],
             [['full_name','email','password','country','state','latitude','longitude','address','company_name','offering_pickup'], 'required','on' => 'addbuyer'],
@@ -115,7 +115,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'updated_at' => 'Updated At',
             'documentid' =>'Document ID',
             'document' =>'Document ID',
-            'referral_code'=>'Referral Code'
+            'referral_code'=>'Referral Code',
+            'membereship_expired_date'=>'Membership Expired Date'
         ];
     }
 
