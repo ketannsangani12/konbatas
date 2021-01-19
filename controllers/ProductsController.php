@@ -129,9 +129,9 @@ class ProductsController extends Controller
                               $productmodel->rhodium_ppt = $rhodium_ppm;
                               $convertervalueusd = $weight*(($platinum_ppm*($platinum_price/$convertweight))+($palldium_ppm*($palladium_price/$convertweight))+($rhodium_ppm*($rhodium_price/$convertweight)))/1000;
                               $productmodel->converter_value = $convertervalueusd;
-                              $platinum = (($convertervalueusd-$usdollar)*0.8)+14.50;
-                              $gold = (($convertervalueusd-$usdollar)*0.75)+14.50;
-                              $green = (($convertervalueusd-$usdollar)*0.7)+14.50;
+                              $platinum = (($convertervalueusd-$usdollar)*0.8)-14.50;
+                              $gold = (($convertervalueusd-$usdollar)*0.75)-14.50;
+                              $green = (($convertervalueusd-$usdollar)*0.7)-14.50;
                               $productmodel->platinum_price = $platinum;
                               $productmodel->gold_price = $gold;
                               $productmodel->green_price = $green;

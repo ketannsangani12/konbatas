@@ -59,9 +59,9 @@ class HelloController extends Controller
                 $weight = $product->converter_ceramic_weight;
                 $convertervalueusd = $weight * (($platinum_ppm * ($platinum_price / $convertweight)) + ($palladium_ppm * ($palladium_price / $convertweight)) + ($rhodium_ppm * ($rhodium_price / $convertweight))) / 1000;
                 $product->converter_value = $convertervalueusd;
-                $platinum = (($convertervalueusd - $usdollar) * 0.8) + 14.50;
-                $gold = (($convertervalueusd - $usdollar) * 0.75) + 14.50;
-                $green = (($convertervalueusd - $usdollar) * 0.7) + 14.50;
+                $platinum = (($convertervalueusd - $usdollar) * 0.8) - 14.50;
+                $gold = (($convertervalueusd - $usdollar) * 0.75) - 14.50;
+                $green = (($convertervalueusd - $usdollar) * 0.7) - 14.50;
 
                 $product->platinum_price = $platinum;
                 $product->gold_price = $gold;

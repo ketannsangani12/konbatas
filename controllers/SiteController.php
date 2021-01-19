@@ -166,7 +166,7 @@ class SiteController extends Controller
         $fromdate = date('Y-m-d 00:00:00');
         $todate = date('Y-m-d H:i:s');
 
-        $model = MetalsPrices::find()->where(['>=','DATE(created_at)', $fromdate])->andWhere(['<=','DATE(created_at)', $todate])->andWhere(['is', 'updated_at', new \yii\db\Expression('null')])->orderBy([
+        $model = MetalsPrices::find()->where(['>=','DATE(created_at)', $fromdate])->andWhere(['<=','DATE(created_at)', $todate])->orderBy([
             'id' => SORT_DESC])->one();
 
                     foreach (Products::find()->each(500) as $product){
@@ -231,4 +231,6 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
 }
