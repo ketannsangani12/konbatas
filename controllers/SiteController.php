@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\CartItems;
+use app\models\Carts;
+use app\models\Images;
 use app\models\MetalsPrices;
 use app\models\Products;
 use app\models\Users;
@@ -64,7 +67,30 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $start_date = date('Y-m-d H:i:s', strtotime('first day of january this year'));
+        $last_date = date('Y-m-d 23:59:00', strtotime('last day of december this year'));
+
+        $buyers = Users::find()->select('role')->where(['role' => 'Buyer'])->count();
+        $sellers = Users::find()->select('role')->where(['role' => 'Seller'])->count();
+        $subscribe_sellers = Users::find()->select('role')->where(['role' => 'Seller'])->count();
+        $total_transactions = Carts::find()->where('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->count();
+        $total_transactions_value = Carts::find()->where('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->sum('total');
+        $accepted_carts = Carts::find()->select('status')->where(['status' => 'Accepted'])->andWhere('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->count();
+        $accepted_carts_value = Carts::find()->select('status')->where(['status' => 'Accepted'])->andWhere('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->sum('total');
+        $total_products = Products::find()->where(['category_id' => 2])->count();
+        $total_images = Images::find()->count();
+
+        return $this->render('index', [
+            'buyers' => $buyers,
+            'sellers' => $sellers,
+            'subscribe_sellers' => $subscribe_sellers,
+            'total_transactions' => $total_transactions,
+            'total_transactions_value' => $total_transactions_value,
+            'accepted_carts' => $accepted_carts,
+            'accepted_carts_value' => $accepted_carts_value,
+            'total_products' => $total_products,
+            'total_images' => $total_images,
+        ]);
     }
 
     /**
