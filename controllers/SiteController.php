@@ -6,6 +6,7 @@ use app\models\CartItems;
 use app\models\Carts;
 use app\models\Images;
 use app\models\MetalsPrices;
+use app\models\Payments;
 use app\models\Products;
 use app\models\Users;
 use Yii;
@@ -72,24 +73,43 @@ class SiteController extends Controller
 
         $buyers = Users::find()->select('role')->where(['role' => 'Buyer'])->count();
         $sellers = Users::find()->select('role')->where(['role' => 'Seller'])->count();
-        $subscribe_sellers = Users::find()->select('role')->where(['role' => 'Seller'])->count();
+        $subscribe_sellers = Users::find()->select('id,role')->where(['role' => 'Seller'])->all();
         $total_transactions = Carts::find()->where('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->count();
         $total_transactions_value = Carts::find()->where('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->sum('total');
         $accepted_carts = Carts::find()->select('status')->where(['status' => 'Accepted'])->andWhere('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->count();
         $accepted_carts_value = Carts::find()->select('status')->where(['status' => 'Accepted'])->andWhere('created_at >= :created_at', [':created_at' => $start_date])->andWhere('created_at <= :endcreated_at', [':endcreated_at' => $last_date])->sum('total');
         $total_products = Products::find()->where(['category_id' => 2])->count();
         $total_images = Images::find()->count();
-
+        $count = 0;
+        if(!empty($subscribe_sellers)){
+            foreach ($subscribe_sellers as $subscribe_seller){
+                $paymentdataexist = Payments::find()->where(['status'=>'Completed','user_id'=>$subscribe_seller['id']])->one();
+                if(!empty($paymentdataexist)){
+                    $count +=1;
+                }
+            }
+        }
+        $mostsoldproducts = CartItems::find()
+            ->joinWith(["cart c","product as p"])
+            ->where(["c.status"=>"Accepted"])
+            ->select(['COUNT(*) AS cnt,product_id,p.part_number,p.secondary_part_number,p.brand'])
+            ->groupBy(['product_id'])
+            ->orderBy(['cnt'=>SORT_DESC])
+            ->limit(100)
+            ->createCommand()
+            ->queryAll();
+       //echo "<pre>";print_r($mostsoldproducts);exit;
         return $this->render('index', [
             'buyers' => $buyers,
             'sellers' => $sellers,
-            'subscribe_sellers' => $subscribe_sellers,
+            'subscribe_sellers' => $count,
             'total_transactions' => $total_transactions,
             'total_transactions_value' => $total_transactions_value,
             'accepted_carts' => $accepted_carts,
             'accepted_carts_value' => $accepted_carts_value,
             'total_products' => $total_products,
             'total_images' => $total_images,
+            'mostsoldproducts'=>$mostsoldproducts
         ]);
     }
 
