@@ -14,6 +14,7 @@ use bburim\daterangepicker\DateRangePicker as DateRangePicker;
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php if (Yii::$app->user->identity->role!='Buyer'){ ?>
 <div class="row">
     <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="info-box">
@@ -178,3 +179,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+<?php }?>
