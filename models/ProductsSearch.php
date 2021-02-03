@@ -42,7 +42,7 @@ class ProductsSearch extends Products
      */
     public function search($params)
     {
-        $query = Products::find();
+        $query = Products::find()->where(['status'=>'Active']);
 
         // add conditions that should always apply here
 

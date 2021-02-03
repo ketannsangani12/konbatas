@@ -649,8 +649,9 @@ class ApiusersController extends ActiveController
                             $query->select(['id','name'])->one();
                         },
                     ]);
+                   $query->where(['status'=>'Active']);
                     if($category!='') {
-                        $query->where(['category_id' => $_POST['category_id']]);
+                        $query->andWhere(['category_id' => $_POST['category_id']]);
                     }
                 if($brand!='') {
                     if($category!=''){

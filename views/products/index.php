@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'updated_at',
 
                 ['class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view} {update} {gallery}',
+                    'template'=>'{view} {update} {gallery} {delete}',
 
                     'buttons'=>[
 
@@ -81,11 +81,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'delete' => function ($url, $model) {
 
-                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', [\yii\helpers\Url::to([Yii::$app->controller->id.'/delete', 'id' => $model->id])], [
+                            return Html::a('<i class="fa fa-eye-slash" aria-hidden="true"></i>', [\yii\helpers\Url::to([Yii::$app->controller->id.'/delete', 'id' => $model->id])], [
 
                                 'title' => 'Delete',
                                 'class' =>'btn btn-sm btn-danger datatable-operation-btn',
-                                'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                'data-confirm' => \Yii::t('yii', 'Are you sure you want to hide this item?'),
                                 'data-method'  => 'post',
 
                             ]);
