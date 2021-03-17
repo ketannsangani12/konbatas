@@ -637,7 +637,7 @@ class ApiusersController extends ActiveController
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
             if (!empty($_POST)) {
-                    $search = (isset($_POST['search']) && $_POST['search']!='')?$_POST['search']:'';
+                    $search = (isset($_POST['search']) && $_POST['search']!='')?str_replace(" ","",$_POST['search']):'';
                     $category = (isset($_POST['category_id']) && $_POST['category_id']!='')?$_POST['category_id']:'';
                     $brand = (isset($_POST['brand']) && $_POST['brand']!='')?$_POST['brand']:'';
 
@@ -658,12 +658,12 @@ class ApiusersController extends ActiveController
                         $query->andWhere(['brand' => $brand]);
 
                     }else{
-                        $query->where(['brand' => $brand]);
+                        $query->andWhere(['brand' => $brand]);
 
                     }
                 }
                    if($search!=''){
-                       $query->where(['like', 'part_number', $search]);
+                       $query->andWhere(['like', 'part_number', $search]);
                        $query->orWhere(['like', 'secondary_part_number', $search]);
 
                        $query->orWhere(['like', 'brand', $search]);
