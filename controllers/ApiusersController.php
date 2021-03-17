@@ -672,7 +672,17 @@ class ApiusersController extends ActiveController
                    }
 
                     $data = $query->asArray()->all();
-                    return array('status' => 1, 'data' => $data);
+                $properties1 = array();
+                if(!empty($data)){
+                    foreach ($data as $key=>$property){
+                        if($property['status']=='Active') {
+                            $properties1[] = $property;
+
+                        }
+
+                    }
+                }
+                    return array('status' => 1, 'data' => $properties1);
             }else{
                 return array('status' => 0, 'message' => 'Please enter mandatory fields.');
             }
