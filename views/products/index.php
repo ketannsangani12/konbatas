@@ -34,7 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
                  'gold_price',
                  'green_price',
                  'converter_value',
-                 'converter_ceramic_weight',
+                [
+                    'attribute'=>'converter_ceramic_weight',
+
+                    'value'=> function($model){
+                        return number_format((float)$model->converter_ceramic_weight, 4, '.', '');
+
+                    },
+                    //'filter'=>false,
+                    //'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],
+
+                ],
+                 //'converter_ceramic_weight',
                 // 'platinum_ppt',
                 // 'palladium_ppt',
                 // 'rhodium_ppt',
