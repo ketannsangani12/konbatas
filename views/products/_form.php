@@ -40,11 +40,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-        <?= $form->field($model, 'platinum_price')->textInput() ?>
 
-        <?= $form->field($model, 'gold_price')->textInput() ?>
-
-        <?= $form->field($model, 'green_price')->textInput() ?>
 
         <?= $form->field($model, 'converter_value')->textInput() ?>
 

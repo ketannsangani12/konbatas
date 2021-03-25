@@ -173,7 +173,26 @@ class ProductsController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->load(Yii::$app->request->post()) ) {
                 if($model->validate()) {
-                    $model->save();
+                    $metalprices = MetalsPrices::find()->orderBy(['id'=>SORT_DESC])->one();
+                    $platinum_price = (float)$metalprices->platinum_price;
+                    $palladium_price = (float)$metalprices->palladium_price;
+                    $rhodium_price = (float)$metalprices->rhodium_price;
+                    $usdollar = 14.50;
+                    $convertweight = 31.1028;
+                    $weight = $model->converter_ceramic_weight;
+                    $platinum_ppm = $model->platinum_ppt;
+                    $palldium_ppm = $model->palladium_ppt;
+                    $rhodium_ppm = $model->rhodium_ppt;
+                    $convertervalueusd = $weight*(($platinum_ppm*($platinum_price/$convertweight))+($palldium_ppm*($palladium_price/$convertweight))+($rhodium_ppm*($rhodium_price/$convertweight)))/1000;
+                    $model->converter_value = $convertervalueusd;
+                    $platinum = (($convertervalueusd-$usdollar)*0.8)-14.50;
+                    $gold = (($convertervalueusd-$usdollar)*0.75)-14.50;
+                    $green = (($convertervalueusd-$usdollar)*0.7)-14.50;
+                    $model->platinum_price = $platinum;
+                    $model->gold_price = $gold;
+                    $model->green_price = $green;
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $model->save(false);
                     return $this->redirect(['index']);
 
 
