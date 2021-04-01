@@ -182,6 +182,7 @@ class ProductsController extends Controller
                     $weight = $model->converter_ceramic_weight;
                     $platinum_ppm = $model->platinum_ppt;
                     $palldium_ppm = $model->palladium_ppt;
+                    $palldium_ppm = $model->palladium_ppt;
                     $rhodium_ppm = $model->rhodium_ppt;
                     $convertervalueusd = $weight*(($platinum_ppm*($platinum_price/$convertweight))+($palldium_ppm*($palladium_price/$convertweight))+($rhodium_ppm*($rhodium_price/$convertweight)))/1000;
                     $model->converter_value = $convertervalueusd;

@@ -640,6 +640,7 @@ class ApiusersController extends ActiveController
                     $search = (isset($_POST['search']) && $_POST['search']!='')?explode(" ",$_POST['search']):'';
                     $category = (isset($_POST['category_id']) && $_POST['category_id']!='')?$_POST['category_id']:'';
                     $brand = (isset($_POST['brand']) && $_POST['brand']!='')?$_POST['brand']:'';
+                    $offset = (isset($_POST['offset']) && $_POST['offset']!='')?$_POST['offset']:'';
 
                     $query = Products::find()->with([
                         'pictures'=>function ($query) {
@@ -676,8 +677,13 @@ class ApiusersController extends ActiveController
 
 
                    }
+                    if($offset!=''){
+                        $data = $query->limit(15)
+                            ->offset($offset)->asArray()->all();
+                    }else{
+                        $data = $query->asArray()->all();
+                    }
 
-                    $data = $query->asArray()->all();
                 $properties1 = array();
                 if(!empty($data)){
                     foreach ($data as $key=>$property){
