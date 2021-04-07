@@ -622,10 +622,17 @@ class ApiusersController extends ActiveController
         if ($method != 'POST') {
             return array('status' => 0, 'message' => 'Bad request.');
         } else {
+            $offset = (isset($_POST['offset']) && $_POST['offset']!='')?$_POST['offset']:'';
             $data['categories'] = Categories::find()->orderBy(['id'=>SORT_ASC])->asArray()->all();
 
-            $data['brands'] = Products::find()->select(['brand'])->where(['!=','brand',''])->groupBy(['brand'])
-                ->asArray()->all();
+            $query = Products::find()->select(['brand'])->where(['!=','brand','']);
+            if($offset!=''){
+                $brands = $query->limit(15)
+                    ->offset($offset)->groupBy(['brand'])->asArray()->all();
+            }else{
+                $brands = $query->groupBy(['brand'])->asArray()->all();
+            }
+            $data['brands'] =$brands;
 
             return array('status' => 1, 'data' => $data);
         }
